@@ -13,9 +13,15 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	velocity = calculateWalkVelocity(velocity)
+	velocity = calculateJumpVelocity(velocity)
+	velocity = calculateGravity(velocity)
 
 	if velocity.length() > 0:
 		velocity = velocity.normalized() * speed
+	
+	if position.y > screen_size.y - 100:
+			velocity.y = 0
+			position.y = screen_size.y - 100
 
 	if velocity.x != 0:
 		# Gets the AnimatedSprite2D node and plays the walk animation
@@ -39,3 +45,15 @@ func calculateWalkVelocity(velocity):
 	
 	return velocity
 
+func calculateJumpVelocity(velocity):
+	if Input.is_action_just_pressed("jump"):
+		velocity.y -= 5
+		$AnimatedSprite2D.play("idle")
+	
+	return velocity
+
+func calculateGravity(velocity):
+	if velocity.y != 0:
+		velocity.y += 0.1 
+	
+	return velocity
