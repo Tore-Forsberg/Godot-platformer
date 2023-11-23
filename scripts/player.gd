@@ -36,12 +36,11 @@ func _process(delta):
 	position = position.clamp(Vector2.ZERO, screen_size)
 
 func calculateWalkVelocity(velocity):
-	if not Input.is_action_pressed("move_left") and not Input.is_action_pressed("move_right"):
+	var direction =  Input.get_axis("move_left", "move_right")
+	if direction != 0:
+		velocity.x += direction
+	else:
 		velocity.x = 0
-	if Input.is_action_pressed("move_right"):
-		velocity.x += 1
-	if Input.is_action_pressed("move_left"):
-		velocity.x -= 1
 	
 	return velocity
 
