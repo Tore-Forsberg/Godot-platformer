@@ -29,7 +29,7 @@ func _process(delta):
 		
 		$AnimatedSprite2D.flip_h = velocity.x < 0
 	else:
-		# Gets the AnimatedSprite2D node and stops the walk animation
+		# Gets the AnimatedSprite2D node and stops the walk animation by starting the idle animation
 		$AnimatedSprite2D.play("idle")
 	
 	position += velocity * delta
