@@ -1,8 +1,10 @@
-extends Area2D
+extends CharacterBody2D
 
 @export var speed = 400 # How fast the player will move (pixels/sec).
-var velocity = Vector2.ZERO # The player's movement vector.
+@export var jump_force = 400
+@export var gravity = 40
 var screen_size # Size of the game window.
+@onready var animated_sprite : AnimatedSprite2D = $AnimatedSprite2D
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -11,48 +13,33 @@ func _ready():
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	velocity = calculateWalkVelocity(velocity)
-	velocity = calculateJumpVelocity(velocity)
-	velocity = calculateGravity(velocity)
-
-	if velocity.length() > 0:
-		velocity = velocity.normalized() * speed
+func _physics_process(delta):	
+	if !is_on_floor():
+		velocity.y += gravity
+		if velocity.y > 1000:
+			velocity.y = 1000 
+	else:
+		velocity.y = 0
+		position.y = screen_size.y - 100
+		
+	if Input.is_action_just_pressed("jump"):
+		velocity.y = -jump_force
+		animated_sprite.play("idle")
 	
-	if position.y > screen_size.y - 100:
-			velocity.y = 0
-			position.y = screen_size.y - 100
+	var direction =  Input.get_axis("move_left", "move_right")
+	velocity.x = speed * direction
+	
 
 	if velocity.x != 0:
 		# Gets the AnimatedSprite2D node and plays the walk animation
-		$AnimatedSprite2D.play("walk")
+		animated_sprite.play("walk")
 		
-		$AnimatedSprite2D.flip_h = velocity.x < 0
+		animated_sprite.flip_h = velocity.x < 0
 	else:
 		# Gets the AnimatedSprite2D node and stops the walk animation by starting the idle animation
-		$AnimatedSprite2D.play("idle")
+		animated_sprite.play("idle")
 	
-	position += velocity * delta
-	position = position.clamp(Vector2.ZERO, screen_size)
-
-func calculateWalkVelocity(velocity):
-	var direction =  Input.get_axis("move_left", "move_right")
-	if direction != 0:
-		velocity.x += direction
-	else:
-		velocity.x = 0
+	move_and_slide()
 	
-	return velocity
-
-func calculateJumpVelocity(velocity):
-	if Input.is_action_just_pressed("jump"):
-		velocity.y -= 5
-		$AnimatedSprite2D.play("idle")
-	
-	return velocity
-
-func calculateGravity(velocity):
-	if velocity.y != 0:
-		velocity.y += 0.1 
-	
-	return velocity
+#	position += velocity * delta
+#	position = position.clamp(Vector2.ZERO, screen_size)
