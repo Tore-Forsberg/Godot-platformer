@@ -1,8 +1,8 @@
 extends CharacterBody2D
 
 @export var speed = 400 # How fast the player will move (pixels/sec).
-@export var jump_force = 400
-@export var gravity = 40
+@export var jump_force = 800
+@export var gravity = 80
 var screen_size # Size of the game window.
 @onready var animated_sprite : AnimatedSprite2D = $AnimatedSprite2D
 
@@ -17,14 +17,11 @@ func _physics_process(delta):
 	if !is_on_floor():
 		velocity.y += gravity
 		if velocity.y > 1000:
-			velocity.y = 1000 
+			velocity.y = 1000
 	else:
-		velocity.y = 0
-		position.y = screen_size.y - 100
-		
-	if Input.is_action_just_pressed("jump"):
-		velocity.y = -jump_force
-		animated_sprite.play("idle")
+		if Input.is_action_pressed("jump"):
+			velocity.y = -jump_force
+			animated_sprite.play("idle")
 	
 	var direction =  Input.get_axis("move_left", "move_right")
 	velocity.x = speed * direction
@@ -40,6 +37,3 @@ func _physics_process(delta):
 		animated_sprite.play("idle")
 	
 	move_and_slide()
-	
-#	position += velocity * delta
-#	position = position.clamp(Vector2.ZERO, screen_size)
