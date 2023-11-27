@@ -4,12 +4,12 @@ extends CharacterBody2D
 @onready var coyote_jump_timer : Timer = $JumpTimer
 @onready var jump_buffer_timer : Timer = $JumpBufferTimer
 
-@export var speed = 600 # How fast the player will move (pixels/sec).
-@export var acceleration = 25
-@export var deacceleration = 15
+@export var speed = 700 # This is the max speed of the player
+@export var acceleration = 90
+@export var deceleration = 25
 
-@export var time_to_jump_peak = 0.5
-@export var jump_height = 200
+@export var jump_height = 220
+@export var time_to_jump_peak = 0.35 # The time it takes to reach the jump_height
 
 var is_jump_buffer_pressed: bool
 
@@ -42,9 +42,9 @@ func _physics_process(delta):
 
 	if velocity.x > 0 or velocity.x < 0:
 			if velocity.x > 0:
-				velocity.x = max(velocity.x - deacceleration, 0)
+				velocity.x = max(velocity.x - deceleration, 0)
 			elif velocity.x < 0:
-				velocity.x = min(velocity.x + deacceleration, 0)
+				velocity.x = min(velocity.x + deceleration, 0)
 
 
 	if Input.is_action_just_pressed("jump"):
