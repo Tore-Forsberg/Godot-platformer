@@ -1,11 +1,10 @@
 [gd_scene load_steps=4 format=3 uid="uid://bcjv05mmsffk4"]
 
 [ext_resource type="PackedScene" uid="uid://hyu7sb1hitr3" path="res://player.tscn" id="1_g2j18"]
-
-[sub_resource type="QuadMesh" id="QuadMesh_rvgcl"]
+[ext_resource type="Texture2D" uid="uid://cc2vvdt0noy6u" path="res://sprites/platformPlaceholder.svg" id="2_kcq7t"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_qnukc"]
-size = Vector2(1000, 500)
+size = Vector2(2000, 100)
 
 [node name="World" type="Node2D"]
 
@@ -15,11 +14,11 @@ position = Vector2(136, 512)
 [node name="platform" type="StaticBody2D" parent="."]
 position = Vector2(10, 0)
 
-[node name="MeshInstance2D" type="MeshInstance2D" parent="platform"]
-position = Vector2(50.0002, 875)
-scale = Vector2(1000, 500)
-mesh = SubResource("QuadMesh_rvgcl")
+[node name="PlatformPlaceholder" type="Sprite2D" parent="platform"]
+position = Vector2(550, 673)
+scale = Vector2(1, 0.2)
+texture = ExtResource("2_kcq7t")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="platform"]
-position = Vector2(50, 875)
+position = Vector2(548, 673)
 shape = SubResource("RectangleShape2D_qnukc")
