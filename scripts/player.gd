@@ -9,9 +9,11 @@ extends CharacterBody2D
 @export var acceleration = 90
 @export var deceleration = 25
 
+var air_acceleration = acceleration/2.4
+var air_deceleration = deceleration/2.4
+
 @export var jump_height = 220
 @export var time_to_jump_peak = 0.35 # The time it takes to reach the jump_height
-
 
 var is_jump_buffer_pressed: bool
 
@@ -42,19 +44,31 @@ func _physics_process(delta):
 
 func manage_movement():
 	if Input.is_action_pressed("move_right"):
-		velocity.x = min(velocity.x + acceleration, speed)
+		if is_on_floor():
+			velocity.x = min(velocity.x + acceleration, speed)
+		else:
+			velocity.x = min(velocity.x + air_acceleration, speed)
 	if Input.is_action_pressed("move_left"):
-		velocity.x = max(velocity.x - acceleration, -speed)
+		if is_on_floor():
+			velocity.x = max(velocity.x - acceleration, -speed)
+		else:
+			velocity.x = max(velocity.x - air_acceleration, -speed)
 
 	if velocity.x > 0 or velocity.x < 0:
+		if is_on_floor():
 			if velocity.x > 0:
 				velocity.x = max(velocity.x - deceleration, 0)
 			elif velocity.x < 0:
 				velocity.x = min(velocity.x + deceleration, 0)
+		else:
+			if velocity.x > 0:
+				velocity.x = max(velocity.x - air_deceleration, 0)
+			elif velocity.x < 0:
+				velocity.x = min(velocity.x + air_deceleration, 0)
 
 
 func manage_jump_conditions():
-	if is_on_floor():
+	if is_on_floor() or is_on_wall_only():
 		is_jump_available = true
 		if is_jump_buffer_pressed == true:
 			jump()
@@ -76,6 +90,12 @@ func manage_jump(delta):
 func jump():
 	velocity.y = -jump_force
 	animated_sprite.play("idle")
+	if is_on_wall_only():
+		velocity.y = -jump_force * 0.8
+		if animated_sprite.flip_h ==true:
+			velocity.x = speed
+		else:
+			velocity.x = -speed
 
 
 func _on_jump_timer_timeout():

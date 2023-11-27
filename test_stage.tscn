@@ -312,3 +312,16 @@ texture = ExtResource("1_j5e3v")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="platform25"]
 position = Vector2(548, 823)
 shape = SubResource("RectangleShape2D_vof1e")
+
+[node name="platform26" type="StaticBody2D" parent="."]
+position = Vector2(8000, -1100)
+rotation = 1.5708
+
+[node name="PlatformPlaceholder" type="Sprite2D" parent="platform26"]
+position = Vector2(550, 823)
+scale = Vector2(1, 0.8)
+texture = ExtResource("1_j5e3v")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="platform26"]
+position = Vector2(550, 823)
+shape = SubResource("RectangleShape2D_vof1e")
