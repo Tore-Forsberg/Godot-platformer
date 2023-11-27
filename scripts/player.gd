@@ -18,6 +18,7 @@ var gravity: float
 
 var is_jump_available: bool
 
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	animated_sprite.play("idle")
@@ -28,16 +29,19 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta):	
-	if is_on_floor():
-		is_jump_available = true
-		if is_jump_buffer_pressed == true:
-			jump()
-	elif is_jump_available == true && coyote_jump_timer.is_stopped():
-		coyote_jump_timer.start()
+	manage_jump_conditions()
+	
+	manage_movement()
+	manage_jump(delta)
+	manage_animations()
+	
+	move_and_slide()
 
+
+func manage_movement():
 	if Input.is_action_pressed("move_right"):
 		velocity.x = min(velocity.x + acceleration, speed)
-	elif Input.is_action_pressed("move_left"):
+	if Input.is_action_pressed("move_left"):
 		velocity.x = max(velocity.x - acceleration, -speed)
 
 	if velocity.x > 0 or velocity.x < 0:
@@ -47,6 +51,16 @@ func _physics_process(delta):
 				velocity.x = min(velocity.x + deceleration, 0)
 
 
+func manage_jump_conditions():
+	if is_on_floor():
+		is_jump_available = true
+		if is_jump_buffer_pressed == true:
+			jump()
+	elif is_jump_available == true && coyote_jump_timer.is_stopped():
+		coyote_jump_timer.start()
+
+
+func manage_jump(delta):
 	if Input.is_action_just_pressed("jump"):
 		if is_jump_available == true:
 			jump()
@@ -56,21 +70,11 @@ func _physics_process(delta):
 	else:
 		velocity.y += gravity*delta
 
-	if velocity.x != 0:
-		# Gets the AnimatedSprite2D node and plays the walk animation
-		if is_on_floor():
-			animated_sprite.play("walk")
-		
-		animated_sprite.flip_h = velocity.x < 0
-	else:
-		# Gets the AnimatedSprite2D node and stops the walk animation by starting the idle animation
-		animated_sprite.play("idle")
-	
-	move_and_slide()
 
 func jump():
 	velocity.y = -jump_force
 	animated_sprite.play("idle")
+
 
 func _on_jump_timer_timeout():
 	is_jump_available = false
@@ -78,3 +82,14 @@ func _on_jump_timer_timeout():
 
 func _on_jump_buffer_timer_timeout():
 	is_jump_buffer_pressed = false
+
+
+func manage_animations():
+	if velocity.x != 0:
+		# Gets the AnimatedSprite2D node and plays the walk animation
+		if is_on_floor():
+			animated_sprite.play("walk")
+		animated_sprite.flip_h = velocity.x < 0
+	else:
+		# Gets the AnimatedSprite2D node and stops the walk animation by starting the idle animation
+		animated_sprite.play("idle")
