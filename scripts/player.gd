@@ -4,12 +4,14 @@ extends CharacterBody2D
 @onready var coyote_jump_timer : Timer = $JumpTimer
 @onready var jump_buffer_timer : Timer = $JumpBufferTimer
 
+
 @export var speed = 700 # This is the max speed of the player
 @export var acceleration = 90
 @export var deceleration = 25
 
 @export var jump_height = 220
 @export var time_to_jump_peak = 0.35 # The time it takes to reach the jump_height
+
 
 var is_jump_buffer_pressed: bool
 
