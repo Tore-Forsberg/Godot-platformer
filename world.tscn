@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://cc2vvdt0noy6u" path="res://sprites/platformPlaceholder.svg" id="2_kcq7t"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_qnukc"]
-size = Vector2(2000, 100)
+size = Vector2(2000, 400)
 
 [node name="World" type="Node2D"]
 
@@ -15,10 +15,10 @@ position = Vector2(136, 512)
 position = Vector2(10, 0)
 
 [node name="PlatformPlaceholder" type="Sprite2D" parent="platform"]
-position = Vector2(550, 673)
-scale = Vector2(1, 0.2)
+position = Vector2(550, 823)
+scale = Vector2(1, 0.8)
 texture = ExtResource("2_kcq7t")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="platform"]
-position = Vector2(548, 673)
+position = Vector2(548, 823)
 shape = SubResource("RectangleShape2D_qnukc")
