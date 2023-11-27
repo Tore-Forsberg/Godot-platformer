@@ -1,24 +1,11 @@
-[gd_scene load_steps=4 format=3 uid="uid://bcjv05mmsffk4"]
+[gd_scene load_steps=3 format=3 uid="uid://bcjv05mmsffk4"]
 
 [ext_resource type="PackedScene" uid="uid://hyu7sb1hitr3" path="res://player.tscn" id="1_g2j18"]
-[ext_resource type="Texture2D" uid="uid://cc2vvdt0noy6u" path="res://sprites/platformPlaceholder.svg" id="2_kcq7t"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_qnukc"]
-size = Vector2(2000, 400)
+[ext_resource type="PackedScene" uid="uid://bmqwmncxmcdyr" path="res://test_stage.tscn" id="2_82iuc"]
 
 [node name="World" type="Node2D"]
 
 [node name="Player" parent="." instance=ExtResource("1_g2j18")]
 position = Vector2(136, 512)
 
-[node name="platform" type="StaticBody2D" parent="."]
-position = Vector2(10, 0)
-
-[node name="PlatformPlaceholder" type="Sprite2D" parent="platform"]
-position = Vector2(550, 823)
-scale = Vector2(1, 0.8)
-texture = ExtResource("2_kcq7t")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="platform"]
-position = Vector2(548, 823)
-shape = SubResource("RectangleShape2D_qnukc")
+[node name="testStage" parent="." instance=ExtResource("2_82iuc")]
