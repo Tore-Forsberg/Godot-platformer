@@ -1,41 +1,58 @@
 extends CharacterBody2D
 
-@export var speed = 200 # How fast the player will move (pixels/sec).
-@export var acceleration = 20
-@export var deacceleration = 10
-@export var jump_force = 800
-@export var gravity = 30
-var screen_size # Size of the game window.
 @onready var animated_sprite : AnimatedSprite2D = $AnimatedSprite2D
+@onready var coyote_jump_timer : Timer = $JumpTimer
+
+@export var speed = 600 # How fast the player will move (pixels/sec).
+@export var acceleration = 25
+@export var deacceleration = 15
+
+var screen_size # Size of the game window.
+
+@export var time_to_jump_peak = 0.5
+@export var jump_height = 200
+
+var is_jump_buffer_pressed: bool
+
+var jump_force: float
+var gravity: float
+
+var is_jump_available: bool
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	screen_size = get_viewport_rect().size
 	position = Vector2(100, screen_size.y - 100)
+	animated_sprite.play("idle")
+	
+	gravity = (2*jump_height)/pow(time_to_jump_peak, 2)
+	jump_force = gravity * time_to_jump_peak
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta):	
-	if !is_on_floor():
-		velocity.y += gravity
-		animated_sprite.play("idle")
-		if velocity.y > 1000:
-			velocity.y = 1000
-	else:
-		if Input.is_action_pressed("jump"):
-			velocity.y = -jump_force
-	
-	var direction =  Input.get_axis("move_left", "move_right")
-	velocity.x = min(velocity.x + (acceleration * direction), speed)
+	if is_on_floor():
+		is_jump_available = true
+	elif is_jump_available == true && coyote_jump_timer.is_stopped():
+		coyote_jump_timer.start()
+
+	if Input.is_action_pressed("move_right"):
+		velocity.x = min(velocity.x + acceleration, speed)
+	elif Input.is_action_pressed("move_left"):
+		velocity.x = max(velocity.x - acceleration, -speed)
+
 	if velocity.x > 0 or velocity.x < 0:
-		if direction != 0:
-			velocity.x -= deacceleration*direction
-		else:
 			if velocity.x > 0:
-				velocity.x -= deacceleration
-			else:
-				velocity.x += deacceleration
-	
+				velocity.x = max(velocity.x - deacceleration, 0)
+			elif velocity.x < 0:
+				velocity.x = min(velocity.x + deacceleration, 0)
+
+
+	if Input.is_action_just_pressed("jump"):
+		if is_jump_available == true:
+			jump()
+	else:
+		velocity.y += gravity*delta
 
 	if velocity.x != 0:
 		# Gets the AnimatedSprite2D node and plays the walk animation
@@ -48,3 +65,10 @@ func _physics_process(delta):
 		animated_sprite.play("idle")
 	
 	move_and_slide()
+
+func jump():
+	velocity.y = -jump_force
+	animated_sprite.play("idle")
+
+func _on_jump_timer_timeout():
+	is_jump_available = false
