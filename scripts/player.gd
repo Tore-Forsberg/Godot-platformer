@@ -2,6 +2,7 @@ extends CharacterBody2D
 
 @onready var animated_sprite : AnimatedSprite2D = $AnimatedSprite2D
 @onready var coyote_jump_timer : Timer = $JumpTimer
+@onready var jump_buffer_timer : Timer = $JumpBufferTimer
 
 @export var speed = 600 # How fast the player will move (pixels/sec).
 @export var acceleration = 25
@@ -29,6 +30,8 @@ func _ready():
 func _physics_process(delta):	
 	if is_on_floor():
 		is_jump_available = true
+		if is_jump_buffer_pressed == true:
+			jump()
 	elif is_jump_available == true && coyote_jump_timer.is_stopped():
 		coyote_jump_timer.start()
 
@@ -47,6 +50,9 @@ func _physics_process(delta):
 	if Input.is_action_just_pressed("jump"):
 		if is_jump_available == true:
 			jump()
+		else:
+			is_jump_buffer_pressed = true
+			jump_buffer_timer.start()
 	else:
 		velocity.y += gravity*delta
 
@@ -68,3 +74,7 @@ func jump():
 
 func _on_jump_timer_timeout():
 	is_jump_available = false
+
+
+func _on_jump_buffer_timer_timeout():
+	is_jump_buffer_pressed = false
