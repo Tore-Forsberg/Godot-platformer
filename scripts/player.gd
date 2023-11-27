@@ -7,8 +7,6 @@ extends CharacterBody2D
 @export var acceleration = 25
 @export var deacceleration = 15
 
-var screen_size # Size of the game window.
-
 @export var time_to_jump_peak = 0.5
 @export var jump_height = 200
 
@@ -21,8 +19,6 @@ var is_jump_available: bool
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	screen_size = get_viewport_rect().size
-	position = Vector2(100, screen_size.y - 100)
 	animated_sprite.play("idle")
 	
 	gravity = (2*jump_height)/pow(time_to_jump_peak, 2)
