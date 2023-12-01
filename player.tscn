@@ -1,46 +1,72 @@
-[gd_scene load_steps=12 format=3 uid="uid://hyu7sb1hitr3"]
+[gd_scene load_steps=14 format=3 uid="uid://hyu7sb1hitr3"]
 
-[ext_resource type="Texture2D" uid="uid://bg15yc38au32g" path="res://sprites/batteriPojkenIdleAndJump0.png" id="1_po384"]
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_qffsy"]
-[ext_resource type="Texture2D" uid="uid://bs6gtdjbkb7xp" path="res://sprites/batteriPojkenIdleAndJump1.png" id="2_ya8l3"]
-[ext_resource type="Texture2D" uid="uid://ddloxien35uvb" path="res://sprites/batteriPojkenIdleAndJump2.png" id="3_51gdf"]
-[ext_resource type="Texture2D" uid="uid://de85e2c2qkpvb" path="res://sprites/batteriPojkenIdleAndJump3.png" id="4_tqbld"]
-[ext_resource type="Texture2D" uid="uid://hdto6ecfr6s2" path="res://sprites/batteriPojkenWalk3.png" id="5_ikcnc"]
-[ext_resource type="Texture2D" uid="uid://cdpyelykyool8" path="res://sprites/batteriPojkenWalk0.png" id="6_xa4li"]
-[ext_resource type="Texture2D" uid="uid://bi063t0qs6834" path="res://sprites/batteriPojkenWalk1.png" id="7_vg4w1"]
-[ext_resource type="Texture2D" uid="uid://bejex3pnyy471" path="res://sprites/batteriPojkenWalk2.png" id="8_obbi0"]
+[ext_resource type="Texture2D" uid="uid://hssjjm8vpk02" path="res://sprites/battery_boy_sprite_sheet.png" id="2_xkhyy"]
+[ext_resource type="Texture2D" uid="uid://bvqbiryaflaym" path="res://sprites/battery_boy_walk_sprite_sheet.png" id="3_5y02q"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7unpj"]
+atlas = ExtResource("2_xkhyy")
+region = Rect2(0, 0, 150, 225)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fxbjo"]
+atlas = ExtResource("2_xkhyy")
+region = Rect2(150, 0, 150, 225)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_snbeq"]
+atlas = ExtResource("2_xkhyy")
+region = Rect2(0, 225, 150, 225)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3xhdd"]
+atlas = ExtResource("2_xkhyy")
+region = Rect2(150, 225, 150, 225)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jq1yb"]
+atlas = ExtResource("3_5y02q")
+region = Rect2(0, 0, 150, 225)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vejvu"]
+atlas = ExtResource("3_5y02q")
+region = Rect2(150, 0, 150, 225)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ospha"]
+atlas = ExtResource("3_5y02q")
+region = Rect2(0, 225, 150, 225)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_o23gd"]
+atlas = ExtResource("3_5y02q")
+region = Rect2(150, 225, 150, 225)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_jyg00"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("1_po384")
+"texture": SubResource("AtlasTexture_7unpj")
 }, {
 "duration": 1.0,
-"texture": ExtResource("2_ya8l3")
+"texture": SubResource("AtlasTexture_fxbjo")
 }, {
 "duration": 1.0,
-"texture": ExtResource("3_51gdf")
+"texture": SubResource("AtlasTexture_snbeq")
 }, {
 "duration": 1.0,
-"texture": ExtResource("4_tqbld")
+"texture": SubResource("AtlasTexture_3xhdd")
 }],
 "loop": true,
 "name": &"idle",
-"speed": 5.0
+"speed": 3.0
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("6_xa4li")
+"texture": SubResource("AtlasTexture_jq1yb")
 }, {
 "duration": 1.0,
-"texture": ExtResource("7_vg4w1")
+"texture": SubResource("AtlasTexture_vejvu")
 }, {
 "duration": 1.0,
-"texture": ExtResource("8_obbi0")
+"texture": SubResource("AtlasTexture_ospha")
 }, {
 "duration": 1.0,
-"texture": ExtResource("5_ikcnc")
+"texture": SubResource("AtlasTexture_o23gd")
 }],
 "loop": true,
 "name": &"walk",
@@ -57,10 +83,23 @@ script = ExtResource("1_qffsy")
 scale = Vector2(0.5, 0.5)
 sprite_frames = SubResource("SpriteFrames_jyg00")
 animation = &"walk"
+frame = 2
+frame_progress = 0.765726
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, 5)
+position = Vector2(3, 1)
 shape = SubResource("RectangleShape2D_ydoqj")
 
 [node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(0, -66)
+position = Vector2(0, -170)
+zoom = Vector2(0.7, 0.7)
+
+[node name="JumpTimer" type="Timer" parent="."]
+wait_time = 0.05
+one_shot = true
+
+[node name="JumpBufferTimer" type="Timer" parent="."]
+wait_time = 0.15
+
+[connection signal="timeout" from="JumpTimer" to="." method="_on_jump_timer_timeout"]
+[connection signal="timeout" from="JumpBufferTimer" to="." method="_on_jump_buffer_timer_timeout"]

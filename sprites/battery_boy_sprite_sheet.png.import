@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://de85e2c2qkpvb"
-path="res://.godot/imported/batteriPojkenIdleAndJump3.png-396add280cad08bca4af7fc9df2265dd.ctex"
+uid="uid://hssjjm8vpk02"
+path="res://.godot/imported/battery_boy_sprite_sheet.png-751db9c9d1326f329ec57d6b350e57b8.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/batteriPojkenIdleAndJump3.png"
-dest_files=["res://.godot/imported/batteriPojkenIdleAndJump3.png-396add280cad08bca4af7fc9df2265dd.ctex"]
+source_file="res://sprites/battery_boy_sprite_sheet.png"
+dest_files=["res://.godot/imported/battery_boy_sprite_sheet.png-751db9c9d1326f329ec57d6b350e57b8.ctex"]
 
 [params]
 
