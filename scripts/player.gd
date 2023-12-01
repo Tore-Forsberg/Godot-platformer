@@ -3,7 +3,6 @@ extends CharacterBody2D
 @onready var animated_sprite : AnimatedSprite2D = $AnimatedSprite2D
 @onready var coyote_jump_timer : Timer = $JumpTimer
 @onready var jump_buffer_timer : Timer = $JumpBufferTimer
-@onready var wall_hug_timer : Timer = $WallHugTimer
 
 
 @export var speed = 700 # This is the max speed of the player
@@ -23,9 +22,6 @@ var gravity: float
 
 var is_jump_available: bool
 
-var is_wall_hugging = false
-var has_hugged_wall: bool
-
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -36,8 +32,7 @@ func _ready():
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _physics_process(delta):
-	manage_wall_hug()
+func _physics_process(delta):	
 	manage_jump_conditions()
 	
 	manage_movement()
@@ -89,8 +84,7 @@ func manage_jump(delta):
 			is_jump_buffer_pressed = true
 			jump_buffer_timer.start()
 	else:
-		if is_wall_hugging == false:
-			velocity.y += gravity*delta
+		velocity.y += gravity*delta
 
 
 func jump():
@@ -102,22 +96,6 @@ func jump():
 			velocity.x = speed
 		else:
 			velocity.x = -speed
-
-
-func manage_wall_hug():
-	if is_on_floor() or (not is_on_floor() and not is_on_wall()):
-		has_hugged_wall == false
-	elif is_on_wall_only() and has_hugged_wall == false:
-		velocity.x = 0
-		velocity.y = 0
-		has_hugged_wall = true
-		is_wall_hugging = true
-		wall_hug_timer.start()
-		
-
-
-func _on_wall_hug_timer_timeout():
-	is_wall_hugging = false
 
 
 func _on_jump_timer_timeout():
