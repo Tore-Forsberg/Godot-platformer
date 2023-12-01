@@ -1,23 +1,25 @@
-[gd_scene load_steps=14 format=3 uid="uid://hyu7sb1hitr3"]
+[gd_scene load_steps=16 format=3 uid="uid://hyu7sb1hitr3"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_qffsy"]
-[ext_resource type="Texture2D" uid="uid://hssjjm8vpk02" path="res://sprites/battery_boy_sprite_sheet.png" id="2_xkhyy"]
+[ext_resource type="Texture2D" uid="uid://b0nt8itmihhb0" path="res://sprites/battery_boy_idle_sprite_sheet.png" id="2_6rbd7"]
 [ext_resource type="Texture2D" uid="uid://bvqbiryaflaym" path="res://sprites/battery_boy_walk_sprite_sheet.png" id="3_5y02q"]
+[ext_resource type="Texture2D" uid="uid://djsmtpft7ivsv" path="res://sprites/grappling-hook-sprite.png" id="4_lsjig"]
+[ext_resource type="Script" path="res://scripts/GrapplingHook.gd" id="5_snneo"]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_7unpj"]
-atlas = ExtResource("2_xkhyy")
+[sub_resource type="AtlasTexture" id="AtlasTexture_7sm8c"]
+atlas = ExtResource("2_6rbd7")
 region = Rect2(0, 0, 150, 225)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_fxbjo"]
-atlas = ExtResource("2_xkhyy")
+[sub_resource type="AtlasTexture" id="AtlasTexture_3qda6"]
+atlas = ExtResource("2_6rbd7")
 region = Rect2(150, 0, 150, 225)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_snbeq"]
-atlas = ExtResource("2_xkhyy")
+[sub_resource type="AtlasTexture" id="AtlasTexture_aojsl"]
+atlas = ExtResource("2_6rbd7")
 region = Rect2(0, 225, 150, 225)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_3xhdd"]
-atlas = ExtResource("2_xkhyy")
+[sub_resource type="AtlasTexture" id="AtlasTexture_iblp4"]
+atlas = ExtResource("2_6rbd7")
 region = Rect2(150, 225, 150, 225)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_jq1yb"]
@@ -40,16 +42,16 @@ region = Rect2(150, 225, 150, 225)
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_7unpj")
+"texture": SubResource("AtlasTexture_7sm8c")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_fxbjo")
+"texture": SubResource("AtlasTexture_3qda6")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_snbeq")
+"texture": SubResource("AtlasTexture_aojsl")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_3xhdd")
+"texture": SubResource("AtlasTexture_iblp4")
 }],
 "loop": true,
 "name": &"idle",
@@ -82,9 +84,8 @@ script = ExtResource("1_qffsy")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 scale = Vector2(0.5, 0.5)
 sprite_frames = SubResource("SpriteFrames_jyg00")
-animation = &"walk"
-frame = 2
-frame_progress = 0.765726
+animation = &"idle"
+frame_progress = 0.753888
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(3, 1)
@@ -100,6 +101,12 @@ one_shot = true
 
 [node name="JumpBufferTimer" type="Timer" parent="."]
 wait_time = 0.15
+
+[node name="GrapplingHook" type="Sprite2D" parent="."]
+position = Vector2(64, 2)
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("4_lsjig")
+script = ExtResource("5_snneo")
 
 [connection signal="timeout" from="JumpTimer" to="." method="_on_jump_timer_timeout"]
 [connection signal="timeout" from="JumpBufferTimer" to="." method="_on_jump_buffer_timer_timeout"]

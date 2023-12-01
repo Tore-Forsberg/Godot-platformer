@@ -3,6 +3,7 @@ extends CharacterBody2D
 @onready var animated_sprite : AnimatedSprite2D = $AnimatedSprite2D
 @onready var coyote_jump_timer : Timer = $JumpTimer
 @onready var jump_buffer_timer : Timer = $JumpBufferTimer
+@onready var grappling_hook : Sprite2D = $GrapplingHook
 
 
 @export var speed = 700 # This is the max speed of the player
@@ -33,7 +34,7 @@ func _ready():
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _physics_process(delta):	
+func _physics_process(delta):
 	manage_jump_conditions()
 	
 	manage_movement()
@@ -41,7 +42,6 @@ func _physics_process(delta):
 	manage_animations()
 	
 	move_and_slide()
-
 
 func manage_movement():
 	if Input.is_action_pressed("move_right"):
@@ -119,7 +119,14 @@ func manage_animations():
 		# Gets the AnimatedSprite2D node and plays the walk animation
 		if is_on_floor():
 			animated_sprite.play("walk")
-		animated_sprite.flip_h = velocity.x < 0
+
+		var direction = Input.get_axis("move_left", "move_right")
+		if direction != 0:
+			# Flips the animation based on the last direction moved in
+			animated_sprite.flip_h = direction == -1
+			grappling_hook.flip_h = direction == -1
+		
+			grappling_hook.position = Vector2(animated_sprite.position.x + (64 * direction), animated_sprite.position.y + 2)
 	else:
 		# Gets the AnimatedSprite2D node and stops the walk animation by starting the idle animation
 		animated_sprite.play("idle")
