@@ -8,18 +8,17 @@ extends CharacterBody2D
 @export var speed = 700 # This is the max speed of the player
 @export var acceleration = 90
 @export var deceleration = 25
-
-var air_acceleration = acceleration/2.4
-var air_deceleration = deceleration/2.4
-
 @export var jump_height = 220
 @export var time_to_jump_peak = 0.35 # The time it takes to reach the jump_height
 
+
+var air_acceleration = acceleration/2.1
+var air_deceleration = deceleration/2.1
 var is_jump_buffer_pressed: bool
-
 var jump_force: float
+var wall_jump_force: float
 var gravity: float
-
+var wall_slide_friction: float
 var is_jump_available: bool
 
 
@@ -28,7 +27,9 @@ func _ready():
 	animated_sprite.play("idle")
 	
 	gravity = (2*jump_height)/pow(time_to_jump_peak, 2)
+	wall_slide_friction = gravity/1.5
 	jump_force = gravity * time_to_jump_peak
+	wall_jump_force = -jump_force * 0.8
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -85,14 +86,21 @@ func manage_jump(delta):
 			jump_buffer_timer.start()
 	else:
 		velocity.y += gravity*delta
+		if is_on_wall_only():
+			var is_moving : bool = Input.get_axis("move_left", "move_right") != 0
+			var is_falling : bool = velocity.y > 0
+			var is_wall_sliding : bool = is_moving and is_falling
+			if is_wall_sliding == true:
+				velocity.y -= wall_slide_friction*delta
 
 
 func jump():
-	velocity.y = -jump_force
 	animated_sprite.play("idle")
+	if is_on_floor():
+		velocity.y = -jump_force
 	if is_on_wall_only():
-		velocity.y = -jump_force * 0.8
-		if animated_sprite.flip_h ==true:
+		velocity.y = wall_jump_force
+		if animated_sprite.flip_h == true:
 			velocity.x = speed
 		else:
 			velocity.x = -speed
