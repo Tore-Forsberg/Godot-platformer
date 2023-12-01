@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cdpyelykyool8"
-path="res://.godot/imported/batteriPojkenWalk0.png-45752a35a8a3676a8b7ad4ddfa791cb8.ctex"
+uid="uid://bvqbiryaflaym"
+path="res://.godot/imported/battery_boy_walk_sprite_sheet.png-544ab537986356054ea1a1da3ab24d0e.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/batteriPojkenWalk0.png"
-dest_files=["res://.godot/imported/batteriPojkenWalk0.png-45752a35a8a3676a8b7ad4ddfa791cb8.ctex"]
+source_file="res://sprites/battery_boy_walk_sprite_sheet.png"
+dest_files=["res://.godot/imported/battery_boy_walk_sprite_sheet.png-544ab537986356054ea1a1da3ab24d0e.ctex"]
 
 [params]
 
