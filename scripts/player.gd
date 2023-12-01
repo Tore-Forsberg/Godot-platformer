@@ -119,14 +119,6 @@ func manage_animations():
 		# Gets the AnimatedSprite2D node and plays the walk animation
 		if is_on_floor():
 			animated_sprite.play("walk")
-
-		var direction = Input.get_axis("move_left", "move_right")
-		if direction != 0:
-			# Flips the animation based on the last direction moved in
-			animated_sprite.flip_h = direction == -1
-			#grappling_hook.flip_h = direction == -1
-		
-			grappling_hook.position = Vector2(animated_sprite.position.x + (20 * direction), animated_sprite.position.y + 2)
 	else:
 		# Gets the AnimatedSprite2D node and stops the walk animation by starting the idle animation
 		animated_sprite.play("idle")
