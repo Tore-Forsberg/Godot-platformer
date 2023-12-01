@@ -3,17 +3,18 @@ extends CharacterBody2D
 @onready var animated_sprite : AnimatedSprite2D = $AnimatedSprite2D
 @onready var coyote_jump_timer : Timer = $JumpTimer
 @onready var jump_buffer_timer : Timer = $JumpBufferTimer
+@onready var grappling_hook : Area2D = $GrapplingHook
 
 
-@export var speed = 700 # This is the max speed of the player
+@export var top_speed = 700 # This is the max speed of the player
 @export var acceleration = 90
 @export var deceleration = 25
 @export var jump_height = 220
 @export var time_to_jump_peak = 0.35 # The time it takes to reach the jump_height
 
 
-var air_acceleration = acceleration/2.1
-var air_deceleration = deceleration/2.1
+var air_acceleration = acceleration/2.4
+var air_deceleration = deceleration/2.4
 var is_jump_buffer_pressed: bool
 var jump_force: float
 var wall_jump_force: float
@@ -33,7 +34,7 @@ func _ready():
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _physics_process(delta):	
+func _physics_process(delta):
 	manage_jump_conditions()
 	
 	manage_movement()
@@ -42,18 +43,17 @@ func _physics_process(delta):
 	
 	move_and_slide()
 
-
 func manage_movement():
 	if Input.is_action_pressed("move_right"):
 		if is_on_floor():
-			velocity.x = min(velocity.x + acceleration, speed)
+			velocity.x = min(velocity.x + acceleration, top_speed)
 		else:
-			velocity.x = min(velocity.x + air_acceleration, speed)
+			velocity.x = min(velocity.x + air_acceleration, top_speed)
 	if Input.is_action_pressed("move_left"):
 		if is_on_floor():
-			velocity.x = max(velocity.x - acceleration, -speed)
+			velocity.x = max(velocity.x - acceleration, -top_speed)
 		else:
-			velocity.x = max(velocity.x - air_acceleration, -speed)
+			velocity.x = max(velocity.x - air_acceleration, -top_speed)
 
 	if velocity.x > 0 or velocity.x < 0:
 		if is_on_floor():
@@ -101,9 +101,9 @@ func jump():
 	if is_on_wall_only():
 		velocity.y = wall_jump_force
 		if animated_sprite.flip_h == true:
-			velocity.x = speed
+			velocity.x = top_speed
 		else:
-			velocity.x = -speed
+			velocity.x = -top_speed
 
 
 func _on_jump_timer_timeout():
@@ -119,7 +119,6 @@ func manage_animations():
 		# Gets the AnimatedSprite2D node and plays the walk animation
 		if is_on_floor():
 			animated_sprite.play("walk")
-		animated_sprite.flip_h = velocity.x < 0
 	else:
 		# Gets the AnimatedSprite2D node and stops the walk animation by starting the idle animation
 		animated_sprite.play("idle")
