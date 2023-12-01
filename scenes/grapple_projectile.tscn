@@ -1,15 +1,23 @@
-[gd_scene load_steps=3 format=3 uid="uid://dv48unkhcfyfw"]
+[gd_scene load_steps=4 format=3 uid="uid://m24mebv1wc2h"]
 
 [ext_resource type="Texture2D" uid="uid://c05dvk2jv6rns" path="res://sprites/grapple-projectile.png" id="1_wdalp"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_emmae"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ehwvd"]
+size = Vector2(20, 15)
 
-[node name="GrappleProjectile" type="Area2D"]
-visible = false
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_o7soe"]
+size = Vector2(7, 5)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("RectangleShape2D_emmae")
+[node name="grapple_projectile" type="Area2D"]
 
-[node name="Grapple-projectile" type="Sprite2D" parent="."]
-position = Vector2(102, 90)
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(1, 0.4)
 texture = ExtResource("1_wdalp")
+
+[node name="EndCollision" type="CollisionShape2D" parent="."]
+position = Vector2(54, 2.5)
+shape = SubResource("RectangleShape2D_ehwvd")
+
+[node name="StartCollision" type="CollisionShape2D" parent="."]
+position = Vector2(-60.5, 2.5)
+shape = SubResource("RectangleShape2D_o7soe")
