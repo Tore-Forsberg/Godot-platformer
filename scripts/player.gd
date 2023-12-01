@@ -3,7 +3,7 @@ extends CharacterBody2D
 @onready var animated_sprite : AnimatedSprite2D = $AnimatedSprite2D
 @onready var coyote_jump_timer : Timer = $JumpTimer
 @onready var jump_buffer_timer : Timer = $JumpBufferTimer
-@onready var grappling_hook : Sprite2D = $GrapplingHook
+@onready var grappling_hook : Area2D = $GrapplingHook
 
 
 @export var speed = 700 # This is the max speed of the player
@@ -124,9 +124,9 @@ func manage_animations():
 		if direction != 0:
 			# Flips the animation based on the last direction moved in
 			animated_sprite.flip_h = direction == -1
-			grappling_hook.flip_h = direction == -1
+			#grappling_hook.flip_h = direction == -1
 		
-			grappling_hook.position = Vector2(animated_sprite.position.x + (64 * direction), animated_sprite.position.y + 2)
+			grappling_hook.position = Vector2(animated_sprite.position.x + (20 * direction), animated_sprite.position.y + 2)
 	else:
 		# Gets the AnimatedSprite2D node and stops the walk animation by starting the idle animation
 		animated_sprite.play("idle")

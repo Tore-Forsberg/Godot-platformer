@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://dv48unkhcfyfw"]
+
+[ext_resource type="Texture2D" uid="uid://c05dvk2jv6rns" path="res://sprites/grapple-projectile.png" id="1_wdalp"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_emmae"]
+
+[node name="GrappleProjectile" type="Area2D"]
+visible = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_emmae")
+
+[node name="Grapple-projectile" type="Sprite2D" parent="."]
+position = Vector2(102, 90)
+texture = ExtResource("1_wdalp")

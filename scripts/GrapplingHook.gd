@@ -8,4 +8,5 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	pass
+	var mouse_position = get_global_mouse_position()
+	look_at(mouse_position)

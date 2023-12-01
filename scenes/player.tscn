@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://hyu7sb1hitr3"]
+[gd_scene load_steps=17 format=3 uid="uid://hyu7sb1hitr3"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_qffsy"]
 [ext_resource type="Texture2D" uid="uid://b0nt8itmihhb0" path="res://sprites/battery_boy_idle_sprite_sheet.png" id="2_6rbd7"]
@@ -78,6 +78,9 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ydoqj"]
 size = Vector2(60, 110)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_sgjv1"]
+size = Vector2(14, 25)
+
 [node name="player" type="CharacterBody2D"]
 script = ExtResource("1_qffsy")
 
@@ -102,11 +105,17 @@ one_shot = true
 [node name="JumpBufferTimer" type="Timer" parent="."]
 wait_time = 0.15
 
-[node name="GrapplingHook" type="Sprite2D" parent="."]
-position = Vector2(64, 2)
+[node name="GrapplingHook" type="Area2D" parent="."]
+script = ExtResource("5_snneo")
+
+[node name="Sprite2D" type="Sprite2D" parent="GrapplingHook"]
+position = Vector2(37, 2)
 scale = Vector2(0.7, 0.7)
 texture = ExtResource("4_lsjig")
-script = ExtResource("5_snneo")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GrapplingHook"]
+position = Vector2(50, 6.5)
+shape = SubResource("RectangleShape2D_sgjv1")
 
 [connection signal="timeout" from="JumpTimer" to="." method="_on_jump_timer_timeout"]
 [connection signal="timeout" from="JumpBufferTimer" to="." method="_on_jump_buffer_timer_timeout"]
