@@ -31,7 +31,7 @@ func _ready():
 	gravity = (2*jump_height)/pow(time_to_jump_peak, 2)
 	wall_slide_friction = gravity/1.5
 	jump_force = gravity * time_to_jump_peak
-	wall_jump_force = -jump_force * 0.8
+	wall_jump_force = -jump_force * 0.75
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -61,13 +61,17 @@ func manage_movement():
 	if velocity.x > 0 or velocity.x < 0:
 		if is_on_floor():
 			if velocity.x > 0:
+				is_left_last_direction = false
 				velocity.x = max(velocity.x - deceleration, 0)
 			elif velocity.x < 0:
+				is_left_last_direction = true
 				velocity.x = min(velocity.x + deceleration, 0)
 		else:
 			if velocity.x > 0:
+				is_left_last_direction = false
 				velocity.x = max(velocity.x - air_deceleration, 0)
 			elif velocity.x < 0:
+				is_left_last_direction = true
 				velocity.x = min(velocity.x + air_deceleration, 0)
 
 
