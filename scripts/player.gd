@@ -21,6 +21,7 @@ var wall_jump_force: float
 var gravity: float
 var wall_slide_friction: float
 var is_jump_available: bool
+var is_left_last_direction: bool
 
 
 # Called when the node enters the scene tree for the first time.
@@ -45,11 +46,13 @@ func _physics_process(delta):
 
 func manage_movement():
 	if Input.is_action_pressed("move_right"):
+		is_left_last_direction = false
 		if is_on_floor():
 			velocity.x = min(velocity.x + acceleration, top_speed)
 		else:
 			velocity.x = min(velocity.x + air_acceleration, top_speed)
 	if Input.is_action_pressed("move_left"):
+		is_left_last_direction = true
 		if is_on_floor():
 			velocity.x = max(velocity.x - acceleration, -top_speed)
 		else:
@@ -100,9 +103,9 @@ func jump():
 		velocity.y = -jump_force
 	if is_on_wall_only():
 		velocity.y = wall_jump_force
-		if animated_sprite.flip_h == true:
+		if is_left_last_direction == true:
 			velocity.x = top_speed
-		else:
+		if is_left_last_direction == false:
 			velocity.x = -top_speed
 
 
