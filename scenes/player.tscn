@@ -115,11 +115,5 @@ texture = ExtResource("4_lsjig")
 position = Vector2(50, 6.5)
 shape = SubResource("RectangleShape2D_sgjv1")
 
-[node name="Raycast" type="Node2D" parent="."]
-
-[node name="RayCast2D" type="RayCast2D" parent="Raycast"]
-position = Vector2(43, 6)
-target_position = Vector2(1200, 0)
-
 [connection signal="timeout" from="JumpTimer" to="." method="_on_jump_timer_timeout"]
 [connection signal="timeout" from="JumpBufferTimer" to="." method="_on_jump_buffer_timer_timeout"]

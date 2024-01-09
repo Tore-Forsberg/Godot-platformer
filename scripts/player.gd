@@ -4,8 +4,6 @@ extends CharacterBody2D
 @onready var coyote_jump_timer : Timer = $JumpTimer
 @onready var jump_buffer_timer : Timer = $JumpBufferTimer
 @onready var magnetic_launcher : Area2D = $GrapplingHook
-@onready var launcher_raycast : Node2D = $Raycast
-
 
 @export var top_speed = 700 # This is the max speed of the player
 @export var acceleration = 90
@@ -23,10 +21,10 @@ var gravity: float
 var wall_slide_friction: float
 var is_jump_available: bool
 var is_left_last_direction: bool
-
+var magnetic_blast = preload("res://scenes/magnetic_blast.tscn")
 
 var launcher_target_position = Vector2()
-
+var can_fire = true
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -142,7 +140,6 @@ func manage_animations():
 
 func look_at_mouse(mouse_position):
 	magnetic_launcher.look_at(mouse_position)
-	launcher_raycast.look_at(mouse_position)
 	
 	if mouse_position.x > position.x:
 		animated_sprite.flip_h = false
@@ -152,11 +149,11 @@ func look_at_mouse(mouse_position):
 		magnetic_launcher.position = Vector2(animated_sprite.position.x - 20, animated_sprite.position.y + 2)
 
 func shoot_magnetic_launcher():
-	if Input.is_action_just_pressed("left_click"):
-		launcher_target_position = get_target_position();
-		print(launcher_target_position)
-			
-func get_target_position():
-	for raycast in launcher_raycast.get_children():
-		if raycast.is_colliding():
-			return raycast.get_collision_point()
+	if Input.is_action_just_pressed("left_click") and can_fire:
+		var magnetic_blast_instance = magnetic_blast.instantiate()
+		magnetic_blast_instance.rotation = magnetic_launcher.rotation
+		magnetic_blast_instance.global_position = position
+		add_child(magnetic_blast_instance)
+		can_fire = false
+		await get_tree().create_timer(0.5).timeout
+		can_fire = true
