@@ -5,7 +5,7 @@ extends Area2D
 
 
 @export var speed = 2000
-
+@export var explosion_particle : PackedScene
 
 var has_hit_item: bool
 
@@ -35,4 +35,16 @@ func _on_explosion_timer_timeout():
 
 
 func explode():
-	pass
+	var _particle = explosion_particle.instantiate()
+	_particle.position = global_position
+	_particle.rotation = global_rotation
+	_particle.emitting = true
+	get_tree().current_scene.add_child(_particle) 
+	queue_free()
+
+
+func _on_body_entered(body):
+	if body is CharacterBody2D:
+		return
+	has_hit_item = true
+	explosion_timer.start()

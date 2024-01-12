@@ -152,7 +152,7 @@ func shoot_magnetic_launcher():
 	if Input.is_action_just_pressed("left_click") and can_fire:
 		var magnetic_blast_instance = magnetic_blast.instantiate()
 		magnetic_blast_instance.rotation = magnetic_launcher.rotation
-		magnetic_blast_instance.global_position = position
+		magnetic_blast_instance.global_position = magnetic_launcher.global_position
 		add_child(magnetic_blast_instance)
 		can_fire = false
 		await get_tree().create_timer(0.5).timeout
