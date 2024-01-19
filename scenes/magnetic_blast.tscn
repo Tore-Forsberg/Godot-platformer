@@ -25,8 +25,11 @@ scale = Vector2(1, 1.8)
 [node name="ExplosionTimer" type="Timer" parent="."]
 wait_time = 0.6
 
+[node name="ActiveTimer" type="Timer" parent="."]
+wait_time = 0.5
+
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="child_entered_tree" from="CollisionShape2D" to="." method="_on_collision_shape_2d_child_entered_tree"]
 [connection signal="tree_entered" from="CollisionShape2D" to="." method="_on_collision_shape_2d_tree_entered"]
-[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]
 [connection signal="timeout" from="ExplosionTimer" to="." method="_on_explosion_timer_timeout"]
+[connection signal="timeout" from="ActiveTimer" to="." method="_on_active_timer_timeout"]

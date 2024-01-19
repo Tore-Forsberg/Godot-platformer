@@ -2,12 +2,18 @@ extends Area2D
 
 
 @onready var explosion_timer : Timer = $ExplosionTimer
+@onready var active_timer : Timer = $ActiveTimer
+@onready var projectile_sprite: Sprite2D = $Sprite2D
 
 
 @export var speed = 2000
 @export var explosion_particle : PackedScene
 
+
 var has_hit_item: bool
+var player = preload("res://scenes/player.tscn")
+var is_explosion_active: bool
+var is_hitting_player: bool
 
 
 # Called when the node enters the scene tree for the first time.
@@ -26,25 +32,32 @@ func _physics_process(delta):
 	set_physics_process(false)
 
 
-func _on_visible_on_screen_notifier_2d_screen_exited():
-	queue_free()
-
-
 func _on_explosion_timer_timeout():
 	explode()
 
 
-func explode():
+func _on_active_timer_timeout():
 	queue_free()
+
+
+func explode():
+	#queue_free()
 	var _particle = explosion_particle.instantiate()
 	_particle.position = global_position
 	_particle.rotation = global_rotation
 	_particle.emitting = true
-	get_tree().current_scene.add_child(_particle) 
+	scale = Vector2(12, 12)
+	projectile_sprite.visible = false
+	get_tree().current_scene.add_child(_particle)
+	is_explosion_active = true
+	active_timer.start()
+	
 
 
 func _on_body_entered(body):
 	if body is CharacterBody2D:
+		if is_explosion_active:
+			is_hitting_player = true
 		return
 	has_hit_item = true
 	explosion_timer.start()

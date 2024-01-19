@@ -10,6 +10,7 @@ extends CharacterBody2D
 @export var deceleration = 25
 @export var jump_height = 220
 @export var time_to_jump_peak = 0.35 # The time it takes to reach the jump_height
+@export var magnetic_blast_knockback = 3
 
 
 var air_acceleration = acceleration/2.4
@@ -22,6 +23,7 @@ var wall_slide_friction: float
 var is_jump_available: bool
 var is_left_last_direction: bool
 var magnetic_blast = preload("res://scenes/magnetic_blast.tscn")
+var active_magnetic_blasts = []
 
 var launcher_target_position = Vector2()
 var can_fire = true
@@ -48,6 +50,8 @@ func _physics_process(delta):
 	
 	look_at_mouse(mouse_position)
 	shoot_magnetic_launcher()
+	
+	magnetic_blast_explosion()
 
 	move_and_slide()
 
@@ -157,3 +161,14 @@ func shoot_magnetic_launcher():
 		can_fire = false
 		await get_tree().create_timer(0.5).timeout
 		can_fire = true
+		active_magnetic_blasts.append(magnetic_blast_instance)
+
+func magnetic_blast_explosion():
+	for blast in active_magnetic_blasts:
+		if blast == null:
+			active_magnetic_blasts.erase(blast)
+			continue
+		if blast.is_hitting_player:
+			var blast_x = blast.global_position.x
+			var blast_y = blast.global_position.y
+			velocity = Vector2((position.x - blast_x)*magnetic_blast_knockback, (position.y - blast_y)*magnetic_blast_knockback)
