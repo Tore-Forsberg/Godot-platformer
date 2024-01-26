@@ -3,15 +3,14 @@ extends CharacterBody2D
 @onready var animated_sprite : AnimatedSprite2D = $AnimatedSprite2D
 @onready var coyote_jump_timer : Timer = $JumpTimer
 @onready var jump_buffer_timer : Timer = $JumpBufferTimer
-@onready var grappling_hook : Area2D = $GrapplingHook
-@onready var hook_raycast : Node2D = $Raycast
-
+@onready var magnetic_launcher : Area2D = $GrapplingHook
 
 @export var top_speed = 700 # This is the max speed of the player
 @export var acceleration = 90
 @export var deceleration = 25
 @export var jump_height = 220
 @export var time_to_jump_peak = 0.35 # The time it takes to reach the jump_height
+@export var magnetic_blast_knockback = 3
 
 
 var air_acceleration = acceleration/2.4
@@ -23,13 +22,11 @@ var gravity: float
 var wall_slide_friction: float
 var is_jump_available: bool
 var is_left_last_direction: bool
+var magnetic_blast = preload("res://scenes/magnetic_blast.tscn")
+var active_magnetic_blasts = []
 
-
-var hook_position = Vector2()
-var is_hooked = false
-var rope_length = 500
-var current_rope_length
-
+var launcher_target_position = Vector2()
+var can_fire = true
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -39,8 +36,6 @@ func _ready():
 	wall_slide_friction = gravity/1.5
 	jump_force = gravity * time_to_jump_peak
 	wall_jump_force = -jump_force * 0.75
-	
-	current_rope_length = rope_length
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -54,29 +49,11 @@ func _physics_process(delta):
 	var mouse_position = get_global_mouse_position()
 	
 	look_at_mouse(mouse_position)
-	hook()
-	# update()
-	if is_hooked:
-		velocity.y += gravity*delta
-		swing(delta)
-		velocity *= 0.98 # Speed of swing
-		move_and_slide()
+	shoot_magnetic_launcher()
+	
+	magnetic_blast_explosion()
 
 	move_and_slide()
-
-
-func _draw():
-	var pos = global_position
-	
-	if is_hooked:
-		draw_line(Vector2(43, 6), to_local(hook_position), Color(1, 0.75, 0.80), 3, true)
-	else:
-		return
-		
-		var colliding = hook_raycast.is_colliding()
-		var collide_point = hook_raycast.get_collision_point()
-		if colliding and pos.distance_to(collide_point) < rope_length:
-			draw_line(Vector2(43, 6), to_local(collide_point), Color(0.35, 0.7, 0.9), 0.5, true)
 
 
 func manage_movement():
@@ -166,40 +143,32 @@ func manage_animations():
 		animated_sprite.play("idle")
 
 func look_at_mouse(mouse_position):
-	grappling_hook.look_at(mouse_position)
-	hook_raycast.look_at(mouse_position)
+	magnetic_launcher.look_at(mouse_position)
 	
 	if mouse_position.x > position.x:
 		animated_sprite.flip_h = false
-		grappling_hook.position = Vector2(animated_sprite.position.x + 20, animated_sprite.position.y + 2)
+		magnetic_launcher.position = Vector2(animated_sprite.position.x + 20, animated_sprite.position.y + 2)
 	elif mouse_position.x < position.x:
 		animated_sprite.flip_h = true
-		grappling_hook.position = Vector2(animated_sprite.position.x - 20, animated_sprite.position.y + 2)
+		magnetic_launcher.position = Vector2(animated_sprite.position.x - 20, animated_sprite.position.y + 2)
 
-func hook():
-	if Input.is_action_just_pressed("left_click"):
-		hook_position = get_hook_position();
-		if hook_position:
-			is_hooked = true
-			current_rope_length = global_position.distance_to(hook_position)
-	if Input.is_action_just_released("left_click") and is_hooked:
-		is_hooked = false
-			
-func get_hook_position():
-	for raycast in hook_raycast.get_children():
-		if raycast.is_colliding():
-			return raycast.get_collision_point()
+func shoot_magnetic_launcher():
+	if Input.is_action_just_pressed("left_click") and can_fire:
+		var magnetic_blast_instance = magnetic_blast.instantiate()
+		magnetic_blast_instance.rotation = magnetic_launcher.rotation
+		magnetic_blast_instance.global_position = magnetic_launcher.global_position
+		add_child(magnetic_blast_instance)
+		can_fire = false
+		await get_tree().create_timer(0.5).timeout
+		can_fire = true
+		active_magnetic_blasts.append(magnetic_blast_instance)
 
-func swing(delta):
-	var radius = global_position - hook_position
-	if velocity.length() < 0.01 or radius.length() < 10: 
-		return
-
-	var angle = acos(radius.dot(velocity) / (radius.length() * velocity.length()))
-	var rad_vel = cos(angle) * velocity.length()
-	velocity += radius.normalized() * -rad_vel
-	
-	if global_position.distance_to(hook_position) > current_rope_length:
-		global_position = hook_position + radius.normalized() * current_rope_length
-	
-	velocity += (hook_position - global_position).normalized() * 15000 *delta
+func magnetic_blast_explosion():
+	for blast in active_magnetic_blasts:
+		if blast == null:
+			active_magnetic_blasts.erase(blast)
+			continue
+		if blast.is_hitting_player:
+			var blast_x = blast.global_position.x
+			var blast_y = blast.global_position.y
+			velocity = Vector2((position.x - blast_x)*magnetic_blast_knockback, (position.y - blast_y)*magnetic_blast_knockback)

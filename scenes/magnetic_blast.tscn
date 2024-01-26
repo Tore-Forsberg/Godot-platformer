@@ -1,0 +1,35 @@
+[gd_scene load_steps=5 format=3 uid="uid://bmhlja7dmysot"]
+
+[ext_resource type="Texture2D" uid="uid://7k1807dydmf" path="res://sprites/hook_point.png" id="1_6k2ex"]
+[ext_resource type="Script" path="res://scripts/magnetic_blast.gd" id="1_r7pt3"]
+[ext_resource type="PackedScene" uid="uid://b4osyq40fhxg3" path="res://scenes/explosion_particles.tscn" id="2_5tapu"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8ri83"]
+size = Vector2(20, 36)
+
+[node name="magnetic_blast" type="Area2D"]
+script = ExtResource("1_r7pt3")
+explosion_particle = ExtResource("2_5tapu")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(1.78814e-07, -1.78814e-07)
+texture = ExtResource("1_6k2ex")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_8ri83")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+position = Vector2(0, -7.15256e-07)
+scale = Vector2(1, 1.8)
+
+[node name="ExplosionTimer" type="Timer" parent="."]
+wait_time = 0.6
+
+[node name="ActiveTimer" type="Timer" parent="."]
+wait_time = 0.5
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="child_entered_tree" from="CollisionShape2D" to="." method="_on_collision_shape_2d_child_entered_tree"]
+[connection signal="tree_entered" from="CollisionShape2D" to="." method="_on_collision_shape_2d_tree_entered"]
+[connection signal="timeout" from="ExplosionTimer" to="." method="_on_explosion_timer_timeout"]
+[connection signal="timeout" from="ActiveTimer" to="." method="_on_active_timer_timeout"]
