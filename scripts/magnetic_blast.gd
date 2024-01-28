@@ -8,10 +8,11 @@ extends Area2D
 
 @export var speed = 2000
 @export var explosion_particle : PackedScene
+@export var magnetic_blast_knockback = 10
 
 
 var has_hit_item: bool
-var player = preload("res://scenes/player.tscn")
+var player
 var is_explosion_active: bool
 var is_hitting_player: bool
 
@@ -25,11 +26,14 @@ func _ready():
 func _process(delta):
 	if not has_hit_item:
 		position += (Vector2.RIGHT*speed).rotated(rotation) * delta
+	if is_explosion_active:
+		magnetic_blast_explosion()
 
 
 func _physics_process(delta):
 	await get_tree().create_timer(0.01).timeout
 	set_physics_process(false)
+	
 
 
 func _on_explosion_timer_timeout():
@@ -54,10 +58,23 @@ func explode():
 	
 
 
+func magnetic_blast_explosion():
+	if player != null:
+		var x_velocity = (player.position.x - global_position.x)*magnetic_blast_knockback
+		var y_velocity = (player.position.y - global_position.y)*magnetic_blast_knockback
+		player.velocity = Vector2(x_velocity, y_velocity)
+
+
 func _on_body_entered(body):
-	if body is CharacterBody2D:
+	if body is Player:
 		if is_explosion_active:
-			is_hitting_player = true
+			player = body
 		return
 	has_hit_item = true
 	explosion_timer.start()
+
+
+func _on_body_exited(body):
+	if body is Player:
+		if is_explosion_active:
+			player = null
