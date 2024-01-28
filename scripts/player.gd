@@ -55,16 +55,20 @@ func manage_movement():
 	if Input.is_action_pressed("move_right"):
 		is_left_last_direction = false
 		if is_on_floor():
-			velocity.x = min(velocity.x + acceleration, top_speed)
+			if velocity.x < top_speed:
+				velocity.x += acceleration
 		else:
-			velocity.x = min(velocity.x + air_acceleration, top_speed)
+			if velocity.x < top_speed:
+				velocity.x += air_acceleration
 
 	if Input.is_action_pressed("move_left"):
 		is_left_last_direction = true
 		if is_on_floor():
-			velocity.x = max(velocity.x - acceleration, -top_speed)
+			if velocity.x > -top_speed:
+				velocity.x -= acceleration
 		else:
-			velocity.x = max(velocity.x - air_acceleration, -top_speed)
+			if velocity.x > -top_speed:
+				velocity.x -= air_acceleration
 
 	if velocity.x > 0 or velocity.x < 0:
 		if is_on_floor():
