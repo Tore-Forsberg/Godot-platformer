@@ -219,7 +219,7 @@ position = Vector2(548, 823)
 shape = SubResource("RectangleShape2D_vof1e")
 
 [node name="platform26" type="StaticBody2D" parent="."]
-position = Vector2(8000, -120)
+position = Vector2(7997.83, -119.5)
 rotation = 1.5708
 scale = Vector2(0.35, 1)
 
