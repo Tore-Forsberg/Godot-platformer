@@ -1,9 +1,11 @@
-extends CharacterBody2D
+class_name Player extends CharacterBody2D
+
 
 @onready var animated_sprite : AnimatedSprite2D = $AnimatedSprite2D
 @onready var coyote_jump_timer : Timer = $JumpTimer
 @onready var jump_buffer_timer : Timer = $JumpBufferTimer
 @onready var magnetic_launcher : Area2D = $GrapplingHook
+
 
 @export var top_speed = 700 # This is the max speed of the player
 @export var acceleration = 90
@@ -40,14 +42,12 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta):
-	manage_jump_conditions()
-	
 	manage_movement()
+	manage_jump_conditions()
 	manage_jump(delta)
 	manage_animations()
 	
 	var mouse_position = get_global_mouse_position()
-	
 	look_at_mouse(mouse_position)
 	shoot_magnetic_launcher()
 	
@@ -63,6 +63,7 @@ func manage_movement():
 			velocity.x = min(velocity.x + acceleration, top_speed)
 		else:
 			velocity.x = min(velocity.x + air_acceleration, top_speed)
+
 	if Input.is_action_pressed("move_left"):
 		is_left_last_direction = true
 		if is_on_floor():
@@ -142,6 +143,7 @@ func manage_animations():
 		# Gets the AnimatedSprite2D node and stops the walk animation by starting the idle animation
 		animated_sprite.play("idle")
 
+
 func look_at_mouse(mouse_position):
 	magnetic_launcher.look_at(mouse_position)
 	
@@ -151,6 +153,7 @@ func look_at_mouse(mouse_position):
 	elif mouse_position.x < position.x:
 		animated_sprite.flip_h = true
 		magnetic_launcher.position = Vector2(animated_sprite.position.x - 20, animated_sprite.position.y + 2)
+
 
 func shoot_magnetic_launcher():
 	if Input.is_action_just_pressed("left_click") and can_fire:
