@@ -1,16 +1,17 @@
-extends CharacterBody2D
+class_name Player extends CharacterBody2D
+
 
 @onready var animated_sprite : AnimatedSprite2D = $AnimatedSprite2D
 @onready var coyote_jump_timer : Timer = $JumpTimer
 @onready var jump_buffer_timer : Timer = $JumpBufferTimer
 @onready var magnetic_launcher : Area2D = $GrapplingHook
 
+
 @export var top_speed = 700 # This is the max speed of the player
 @export var acceleration = 90
 @export var deceleration = 25
 @export var jump_height = 220
 @export var time_to_jump_peak = 0.35 # The time it takes to reach the jump_height
-@export var magnetic_blast_knockback = 3
 
 
 var air_acceleration = acceleration/2.4
@@ -23,10 +24,8 @@ var wall_slide_friction: float
 var is_jump_available: bool
 var is_left_last_direction: bool
 var magnetic_blast = preload("res://scenes/magnetic_blast.tscn")
-var active_magnetic_blasts = []
-
-var launcher_target_position = Vector2()
 var can_fire = true
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -40,18 +39,14 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta):
-	manage_jump_conditions()
-	
 	manage_movement()
+	manage_jump_conditions()
 	manage_jump(delta)
 	manage_animations()
 	
 	var mouse_position = get_global_mouse_position()
-	
 	look_at_mouse(mouse_position)
 	shoot_magnetic_launcher()
-	
-	magnetic_blast_explosion()
 
 	move_and_slide()
 
@@ -60,15 +55,20 @@ func manage_movement():
 	if Input.is_action_pressed("move_right"):
 		is_left_last_direction = false
 		if is_on_floor():
-			velocity.x = min(velocity.x + acceleration, top_speed)
+			if velocity.x < top_speed:
+				velocity.x += acceleration
 		else:
-			velocity.x = min(velocity.x + air_acceleration, top_speed)
+			if velocity.x < top_speed:
+				velocity.x += air_acceleration
+
 	if Input.is_action_pressed("move_left"):
 		is_left_last_direction = true
 		if is_on_floor():
-			velocity.x = max(velocity.x - acceleration, -top_speed)
+			if velocity.x > -top_speed:
+				velocity.x -= acceleration
 		else:
-			velocity.x = max(velocity.x - air_acceleration, -top_speed)
+			if velocity.x > -top_speed:
+				velocity.x -= air_acceleration
 
 	if velocity.x > 0 or velocity.x < 0:
 		if is_on_floor():
@@ -142,6 +142,7 @@ func manage_animations():
 		# Gets the AnimatedSprite2D node and stops the walk animation by starting the idle animation
 		animated_sprite.play("idle")
 
+
 func look_at_mouse(mouse_position):
 	magnetic_launcher.look_at(mouse_position)
 	
@@ -152,6 +153,7 @@ func look_at_mouse(mouse_position):
 		animated_sprite.flip_h = true
 		magnetic_launcher.position = Vector2(animated_sprite.position.x - 20, animated_sprite.position.y + 2)
 
+
 func shoot_magnetic_launcher():
 	if Input.is_action_just_pressed("left_click") and can_fire:
 		var magnetic_blast_instance = magnetic_blast.instantiate()
@@ -161,14 +163,3 @@ func shoot_magnetic_launcher():
 		can_fire = false
 		await get_tree().create_timer(0.5).timeout
 		can_fire = true
-		active_magnetic_blasts.append(magnetic_blast_instance)
-
-func magnetic_blast_explosion():
-	for blast in active_magnetic_blasts:
-		if blast == null:
-			active_magnetic_blasts.erase(blast)
-			continue
-		if blast.is_hitting_player:
-			var blast_x = blast.global_position.x
-			var blast_y = blast.global_position.y
-			velocity = Vector2((position.x - blast_x)*magnetic_blast_knockback, (position.y - blast_y)*magnetic_blast_knockback)
