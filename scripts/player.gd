@@ -4,7 +4,7 @@ class_name Player extends CharacterBody2D
 @onready var animated_sprite : AnimatedSprite2D = $AnimatedSprite2D
 @onready var coyote_jump_timer : Timer = $JumpTimer
 @onready var jump_buffer_timer : Timer = $JumpBufferTimer
-@onready var magnetic_launcher : Area2D = $GrapplingHook
+@onready var magnetic_launcher : Area2D = $MagneticLauncher
 
 
 @export var top_speed = 700 # This is the max speed of the player
@@ -23,8 +23,6 @@ var gravity: float
 var wall_slide_friction: float
 var is_jump_available: bool
 var is_left_last_direction: bool
-var magnetic_blast = preload("res://scenes/magnetic_blast.tscn")
-var can_fire = true
 
 
 # Called when the node enters the scene tree for the first time.
@@ -46,7 +44,6 @@ func _physics_process(delta):
 	
 	var mouse_position = get_global_mouse_position()
 	look_at_mouse(mouse_position)
-	shoot_magnetic_launcher()
 
 	move_and_slide()
 
@@ -125,14 +122,6 @@ func jump():
 			velocity.x = -top_speed
 
 
-func _on_jump_timer_timeout():
-	is_jump_available = false
-
-
-func _on_jump_buffer_timer_timeout():
-	is_jump_buffer_pressed = false
-
-
 func manage_animations():
 	if velocity.x != 0:
 		# Gets the AnimatedSprite2D node and plays the walk animation
@@ -144,22 +133,15 @@ func manage_animations():
 
 
 func look_at_mouse(mouse_position):
-	magnetic_launcher.look_at(mouse_position)
-	
 	if mouse_position.x > position.x:
 		animated_sprite.flip_h = false
-		magnetic_launcher.position = Vector2(animated_sprite.position.x + 20, animated_sprite.position.y + 2)
 	elif mouse_position.x < position.x:
 		animated_sprite.flip_h = true
-		magnetic_launcher.position = Vector2(animated_sprite.position.x - 20, animated_sprite.position.y + 2)
 
 
-func shoot_magnetic_launcher():
-	if Input.is_action_just_pressed("left_click") and can_fire:
-		var magnetic_blast_instance = magnetic_blast.instantiate()
-		magnetic_blast_instance.rotation = magnetic_launcher.rotation
-		magnetic_blast_instance.global_position = magnetic_launcher.global_position
-		add_child(magnetic_blast_instance)
-		can_fire = false
-		await get_tree().create_timer(0.5).timeout
-		can_fire = true
+func _on_jump_timer_timeout():
+	is_jump_available = false
+
+
+func _on_jump_buffer_timer_timeout():
+	is_jump_buffer_pressed = false
