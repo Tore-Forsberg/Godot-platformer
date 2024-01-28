@@ -23,21 +23,13 @@ var is_hitting_player: bool
 func _ready():
 	set_as_top_level(true)
 	explosion_collision.disabled = true
-	
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
+func _physics_process(delta):
 	if not has_hit_item:
 		position += (Vector2.RIGHT*speed).rotated(rotation) * delta
 	if is_explosion_active:
 		magnetic_blast_explosion()
-
-
-func _physics_process(delta):
-	await get_tree().create_timer(0.01).timeout
-	set_physics_process(false)
-	
 
 
 func _on_explosion_timer_timeout():
@@ -70,13 +62,10 @@ func explode():
 
 
 func magnetic_blast_explosion():
-	var x_velocity
-	var y_velocity
 	if player != null:
-		x_velocity = (player.position.x - global_position.x)*magnetic_blast_knockback
-		y_velocity = (player.position.y - global_position.y)*magnetic_blast_knockback
+		var x_velocity = (player.position.x - global_position.x)*magnetic_blast_knockback
+		var y_velocity = (player.position.y - global_position.y)*magnetic_blast_knockback
 		player.velocity = Vector2(x_velocity, y_velocity)
-	print("X: ", x_velocity, "Y: ", y_velocity)
 
 
 func _on_body_entered(body):
