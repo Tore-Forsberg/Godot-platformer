@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://deht4h3jqvdub"]
+
+[ext_resource type="Script" path="res://scripts/magnetic_launcher.gd" id="1_4icnr"]
+[ext_resource type="Texture2D" uid="uid://djsmtpft7ivsv" path="res://sprites/grappling-hook-sprite.png" id="1_r4iyo"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ppu12"]
+size = Vector2(14, 25)
+
+[node name="MagneticLauncher" type="Area2D"]
+script = ExtResource("1_4icnr")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(37, 2)
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("1_r4iyo")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(50, 6.5)
+shape = SubResource("RectangleShape2D_ppu12")
