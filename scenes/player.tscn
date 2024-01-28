@@ -103,5 +103,11 @@ wait_time = 0.15
 
 [node name="MagneticLauncher" parent="." instance=ExtResource("4_nag45")]
 
+[node name="LeftRayCast" type="RayCast2D" parent="."]
+target_position = Vector2(-50, 0)
+
+[node name="RightRayCast" type="RayCast2D" parent="."]
+target_position = Vector2(50, 0)
+
 [connection signal="timeout" from="JumpTimer" to="." method="_on_jump_timer_timeout"]
 [connection signal="timeout" from="JumpBufferTimer" to="." method="_on_jump_buffer_timer_timeout"]

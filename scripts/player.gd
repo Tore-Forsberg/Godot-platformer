@@ -5,6 +5,8 @@ class_name Player extends CharacterBody2D
 @onready var coyote_jump_timer : Timer = $JumpTimer
 @onready var jump_buffer_timer : Timer = $JumpBufferTimer
 @onready var magnetic_launcher : Area2D = $MagneticLauncher
+@onready var left_raycast : RayCast2D = $LeftRayCast
+@onready var right_raycast : RayCast2D = $RightRayCast
 
 
 @export var top_speed = 700 # This is the max speed of the player
@@ -12,6 +14,7 @@ class_name Player extends CharacterBody2D
 @export var deceleration = 25
 @export var jump_height = 220
 @export var time_to_jump_peak = 0.35 # The time it takes to reach the jump_height
+@export var wall_hang_force_multiplier = 1.5
 
 
 var air_acceleration = acceleration/2.4
@@ -105,7 +108,7 @@ func manage_jump(delta):
 		if is_on_wall_only():
 			var is_moving : bool = Input.get_axis("move_left", "move_right") != 0
 			var is_falling : bool = velocity.y > 0
-			var is_wall_sliding : bool = is_moving and is_falling
+			var is_wall_sliding = is_moving and is_falling
 			if is_wall_sliding == true:
 				velocity.y -= wall_slide_friction*delta
 
@@ -116,10 +119,19 @@ func jump():
 		velocity.y = -jump_force
 	if is_on_wall_only():
 		velocity.y = wall_jump_force
-		if is_left_last_direction == true:
-			velocity.x = top_speed
-		if is_left_last_direction == false:
-			velocity.x = -top_speed
+		
+		# Declare and sets the horizontal wall_jump force
+		var wall_jump_speed
+		var is_moving : bool = Input.get_axis("move_left", "move_right") != 0
+		if is_moving:
+			wall_jump_speed = top_speed * wall_hang_force_multiplier
+		else:
+			wall_jump_speed = top_speed
+		
+		if left_raycast.is_colliding():
+			velocity.x = wall_jump_speed
+		if right_raycast.is_colliding():
+			velocity.x = -wall_jump_speed
 
 
 func manage_animations():
