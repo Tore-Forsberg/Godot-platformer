@@ -7,10 +7,5 @@
 
 [node name="Player" parent="." instance=ExtResource("1_g6ckl")]
 position = Vector2(136, 512)
-top_speed = 700
-acceleration = 90
-deceleration = 25
-jump_height = 220
-time_to_jump_peak = 0.35
 
 [node name="testStage" parent="." instance=ExtResource("2_wq322")]
