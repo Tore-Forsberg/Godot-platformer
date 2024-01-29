@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://bmqwmncxmcdyr"]
+[gd_scene load_steps=4 format=3 uid="uid://bmqwmncxmcdyr"]
 
 [ext_resource type="Texture2D" uid="uid://cc2vvdt0noy6u" path="res://sprites/platformPlaceholder.svg" id="1_j5e3v"]
+[ext_resource type="PackedScene" uid="uid://cgrgwljxol25" path="res://scenes/spike.tscn" id="2_uw0i8"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vof1e"]
 size = Vector2(2000, 400)
@@ -249,7 +250,7 @@ position = Vector2(548, 823)
 shape = SubResource("RectangleShape2D_vof1e")
 
 [node name="platform15" type="StaticBody2D" parent="Platforms"]
-position = Vector2(5000, -1640)
+position = Vector2(5000, -1639)
 scale = Vector2(0.2, 0.55)
 
 [node name="PlatformPlaceholder" type="Sprite2D" parent="Platforms/platform15"]
@@ -262,7 +263,7 @@ position = Vector2(548, 823)
 shape = SubResource("RectangleShape2D_vof1e")
 
 [node name="platform17" type="StaticBody2D" parent="Platforms"]
-position = Vector2(5750, -1640)
+position = Vector2(5750, -1639)
 scale = Vector2(0.2, 0.55)
 
 [node name="PlatformPlaceholder" type="Sprite2D" parent="Platforms/platform17"]
@@ -273,3 +274,11 @@ texture = ExtResource("1_j5e3v")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/platform17"]
 position = Vector2(548, 823)
 shape = SubResource("RectangleShape2D_vof1e")
+
+[node name="Spike" parent="." instance=ExtResource("2_uw0i8")]
+position = Vector2(980, 603)
+scale = Vector2(8, 2)
+
+[node name="Spike2" parent="." instance=ExtResource("2_uw0i8")]
+position = Vector2(5486, -1133)
+scale = Vector2(9.75, 6)

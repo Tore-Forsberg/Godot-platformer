@@ -1,0 +1,22 @@
+[gd_scene load_steps=3 format=3 uid="uid://cgrgwljxol25"]
+
+[ext_resource type="Script" path="res://scripts/spike.gd" id="1_muleb"]
+[ext_resource type="Texture2D" uid="uid://7k1807dydmf" path="res://sprites/hook_point.png" id="2_y4cjh"]
+
+[node name="Spike" type="Area2D"]
+texture_repeat = 2
+scale = Vector2(2, 2)
+script = ExtResource("1_muleb")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_repeat = 2
+rotation = -1.5708
+texture = ExtResource("2_y4cjh")
+region_enabled = true
+region_rect = Rect2(0, 0, 19, 36)
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+position = Vector2(0, -0.5)
+polygon = PackedVector2Array(-18, 10, 0, -10, 18, 10)
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
