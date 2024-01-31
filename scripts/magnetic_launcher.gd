@@ -19,6 +19,7 @@ func _process(delta):
 	look_at_mouse(mouse_position)
 	shoot_magnetic_launcher()
 
+
 func shoot_magnetic_launcher():
 	if Input.is_action_just_pressed("left_click") and can_fire:
 		var magnetic_blast_instance = magnetic_blast.instantiate()
@@ -29,8 +30,10 @@ func shoot_magnetic_launcher():
 		await get_tree().create_timer(0.5).timeout
 		can_fire = true
 
+
 func look_at_mouse(mouse_position):
 	look_at(mouse_position)
+	
 	var player_sprite_x = player.animated_sprite.position.x
 	var player_sprite_y = player.animated_sprite.position.y
 	

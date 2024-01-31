@@ -10,7 +10,9 @@ extends Area2D
 
 @export var speed = 2000
 @export var explosion_particle : PackedScene
-@export var magnetic_blast_knockback = 10
+@export var magnetic_blast_x_knockback_multiplier = 1.5
+@export var magnetic_blast_y_knockback_multiplier = 2
+@export var magnetic_blast_max_knockback = 1500
 
 
 var has_hit_item: bool
@@ -63,10 +65,29 @@ func explode():
 
 func magnetic_blast_explosion():
 	if player != null:
-		var x_velocity = (player.position.x - global_position.x)*magnetic_blast_knockback
-		var y_velocity = (player.position.y - global_position.y)*magnetic_blast_knockback
+		if player.is_on_wall():
+			if player.is_left_last_direction:
+				player.velocity.x = 1000
+			else:
+				player.velocity.x = -1000
+
+		var x_velocity_change = (player.position.x - global_position.x)*magnetic_blast_x_knockback_multiplier
+		var x_velocity = player.velocity.x + x_velocity_change
+		control_knockback_velocity(x_velocity)
+
+		var y_velocity_change = (player.position.y - global_position.y)*magnetic_blast_y_knockback_multiplier
+		var y_velocity = player.velocity.y + y_velocity_change
+		control_knockback_velocity(y_velocity)
+
 		player.velocity = Vector2(x_velocity, y_velocity)
 
+
+func control_knockback_velocity(velocity):
+	# Controls the velocity so it does not exceed the max
+	if velocity > magnetic_blast_max_knockback:
+		velocity = magnetic_blast_max_knockback
+	if velocity < -magnetic_blast_max_knockback:
+		velocity = -magnetic_blast_max_knockback
 
 func _on_body_entered(body):
 	if body is Player:

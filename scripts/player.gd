@@ -151,6 +151,11 @@ func look_at_mouse(mouse_position):
 		animated_sprite.flip_h = true
 
 
+func death():
+	queue_free()
+	get_tree().reload_current_scene()
+
+
 func _on_jump_timer_timeout():
 	is_jump_available = false
 
