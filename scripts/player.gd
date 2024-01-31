@@ -16,6 +16,7 @@ class_name Player extends CharacterBody2D
 @export var jump_height = 220
 @export var time_to_jump_peak = 0.35 # The time it takes to reach the jump_height
 @export var wall_hang_force_multiplier = 1.5
+@export var wall_bounce_velocity_threshold = 1300
 
 
 var air_acceleration = acceleration/2.4
@@ -160,7 +161,7 @@ func look_at_mouse(mouse_position):
 func wall_bounce():
 	var is_colliding_with_wall = left_raycast.is_colliding() or right_raycast.is_colliding()
 	if is_colliding_with_wall and not is_on_floor() and wall_bounce_timer.is_stopped():
-		if velocity.x > 1200 or velocity.x < -1200:
+		if velocity.x > wall_bounce_velocity_threshold or velocity.x < -wall_bounce_velocity_threshold:
 			velocity.x *= -1
 			wall_bounce_timer.start()
 
