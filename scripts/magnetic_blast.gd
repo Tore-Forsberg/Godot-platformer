@@ -10,8 +10,9 @@ extends Area2D
 
 @export var speed = 2000
 @export var explosion_particle : PackedScene
-@export var magnetic_blast_knockback_multiplier = 2
-@export var magnetic_blast_max_knockback = 2000
+@export var magnetic_blast_x_knockback_multiplier = 1.5
+@export var magnetic_blast_y_knockback_multiplier = 2
+@export var magnetic_blast_max_knockback = 1500
 
 
 var has_hit_item: bool
@@ -64,15 +65,22 @@ func explode():
 
 func magnetic_blast_explosion():
 	if player != null:
-		var x_velocity = player.velocity.x + (player.position.x - global_position.x)*magnetic_blast_knockback_multiplier
+		if player.is_on_wall():
+			if player.is_left_last_direction:
+				player.velocity.x = 1000
+			else:
+				player.velocity.x = -1000
+
+		var x_velocity_change = (player.position.x - global_position.x)*magnetic_blast_x_knockback_multiplier
+		var x_velocity = player.velocity.x + x_velocity_change
 		control_knockback_velocity(x_velocity)
-		var y_velocity = player.velocity.y + (player.position.y - global_position.y)*magnetic_blast_knockback_multiplier
+
+		var y_velocity_change = (player.position.y - global_position.y)*magnetic_blast_y_knockback_multiplier
+		var y_velocity = player.velocity.y + y_velocity_change
 		control_knockback_velocity(y_velocity)
+
 		player.velocity = Vector2(x_velocity, y_velocity)
-		if player.velocity.x > -200 and player.velocity.x < 200:
-			player.velocity.x * 5
-		#print("X: " +  str(x_velocity) +  "Y: " + str(y_velocity))
-		print(player.velocity)
+
 
 func control_knockback_velocity(velocity):
 	# Controls the velocity so it does not exceed the max
@@ -83,9 +91,7 @@ func control_knockback_velocity(velocity):
 
 func _on_body_entered(body):
 	if body is Player:
-		print("Tja du nuddar projektilen eller explosionen")
 		if is_explosion_active:
-			print("Du borde flyga")
 			player = body
 		return
 	has_hit_item = true
