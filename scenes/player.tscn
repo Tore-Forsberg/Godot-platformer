@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_qffsy"]
 [ext_resource type="Texture2D" uid="uid://b0nt8itmihhb0" path="res://sprites/battery_boy_idle_sprite_sheet.png" id="2_6rbd7"]
 [ext_resource type="Texture2D" uid="uid://bvqbiryaflaym" path="res://sprites/battery_boy_walk_sprite_sheet.png" id="3_5y02q"]
-[ext_resource type="PackedScene" uid="uid://deht4h3jqvdub" path="res://Scenes/magnetic_launcher.tscn" id="4_nag45"]
+[ext_resource type="PackedScene" uid="uid://deht4h3jqvdub" path="res://scenes/magnetic_launcher.tscn" id="4_nag45"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_7sm8c"]
 atlas = ExtResource("2_6rbd7")
@@ -104,10 +104,10 @@ wait_time = 0.15
 [node name="MagneticLauncher" parent="." instance=ExtResource("4_nag45")]
 
 [node name="LeftRayCast" type="RayCast2D" parent="."]
-target_position = Vector2(-50, 0)
+target_position = Vector2(-40, 0)
 
 [node name="RightRayCast" type="RayCast2D" parent="."]
-target_position = Vector2(50, 0)
+target_position = Vector2(45, 0)
 
 [node name="WallBounceTimer" type="Timer" parent="."]
 wait_time = 0.5
