@@ -157,7 +157,7 @@ func look_at_mouse(mouse_position):
 func wall_bounce():
 	var is_colliding_with_wall = left_raycast.is_colliding() or right_raycast.is_colliding()
 	if is_colliding_with_wall and not is_on_floor() and wall_bounce_timer.is_stopped():
-		if velocity.x > 800 or velocity.x < -800:
+		if velocity.x > 1200 or velocity.x < -1200:
 			velocity.x *= -1
 			wall_bounce_timer.start()
 
