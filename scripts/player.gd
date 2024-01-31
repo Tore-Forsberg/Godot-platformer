@@ -47,6 +47,10 @@ func _physics_process(delta):
 	
 	var mouse_position = get_global_mouse_position()
 	look_at_mouse(mouse_position)
+	
+	if left_raycast.is_colliding() or right_raycast.is_colliding() and not is_on_floor():
+		if velocity.x > 800 or velocity.x < -800:
+			velocity.x *= -1
 
 	move_and_slide()
 
