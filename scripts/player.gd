@@ -91,7 +91,8 @@ func manage_movement():
 
 
 func manage_jump_conditions():
-	if is_on_floor() or is_on_wall_only():
+	var can_wall_jump = (left_raycast.is_colliding() or right_raycast.is_colliding()) and not is_on_floor()
+	if is_on_floor() or can_wall_jump:
 		is_jump_available = true
 		if is_jump_buffer_pressed == true:
 			jump()
@@ -108,7 +109,8 @@ func manage_jump(delta):
 			jump_buffer_timer.start()
 	else:
 		velocity.y += gravity*delta
-		if is_on_wall_only():
+		var can_wall_jump = (left_raycast.is_colliding() or right_raycast.is_colliding()) and not is_on_floor()
+		if can_wall_jump:
 			var is_moving : bool = Input.get_axis("move_left", "move_right") != 0
 			var is_falling : bool = velocity.y > 0
 			var is_wall_sliding = is_moving and is_falling
@@ -120,7 +122,8 @@ func jump():
 	animated_sprite.play("idle")
 	if is_on_floor():
 		velocity.y = -jump_force
-	if is_on_wall_only():
+	var can_wall_jump = (left_raycast.is_colliding() or right_raycast.is_colliding()) and not is_on_floor()
+	if can_wall_jump:
 		velocity.y = wall_jump_force
 		
 		# Declare and sets the horizontal wall_jump force
