@@ -4,6 +4,7 @@ class_name Player extends CharacterBody2D
 @onready var animated_sprite : AnimatedSprite2D = $AnimatedSprite2D
 @onready var coyote_jump_timer : Timer = $JumpTimer
 @onready var jump_buffer_timer : Timer = $JumpBufferTimer
+@onready var wall_bounce_timer : Timer = $WallBounceTimer
 @onready var magnetic_launcher : Area2D = $MagneticLauncher
 @onready var left_raycast : RayCast2D = $LeftRayCast
 @onready var right_raycast : RayCast2D = $RightRayCast
@@ -48,9 +49,7 @@ func _physics_process(delta):
 	var mouse_position = get_global_mouse_position()
 	look_at_mouse(mouse_position)
 	
-	if left_raycast.is_colliding() or right_raycast.is_colliding() and not is_on_floor():
-		if velocity.x > 800 or velocity.x < -800:
-			velocity.x *= -1
+	wall_bounce()
 
 	move_and_slide()
 
@@ -153,6 +152,14 @@ func look_at_mouse(mouse_position):
 		animated_sprite.flip_h = false
 	elif mouse_position.x < position.x:
 		animated_sprite.flip_h = true
+
+
+func wall_bounce():
+	var is_colliding_with_wall = left_raycast.is_colliding() or right_raycast.is_colliding()
+	if is_colliding_with_wall and not is_on_floor() and wall_bounce_timer.is_stopped():
+		if velocity.x > 800 or velocity.x < -800:
+			velocity.x *= -1
+			wall_bounce_timer.start()
 
 
 func death():
