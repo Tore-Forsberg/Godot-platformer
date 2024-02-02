@@ -6,6 +6,7 @@ extends CharacterBody2D
 
 @export var movement_range = 1000
 @export var speed = 200
+@export var bounce_value = 1000
 
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
@@ -31,6 +32,7 @@ func death():
 
 func _on_top_checker_body_entered(body):
 	if body is Player:
+		body.velocity.y -= bounce_value
 		death()
 
 
