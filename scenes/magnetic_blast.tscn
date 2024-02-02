@@ -1,8 +1,45 @@
-[gd_scene load_steps=6 format=3 uid="uid://blejrgmsp0rdm"]
+[gd_scene load_steps=9 format=3 uid="uid://blejrgmsp0rdm"]
 
 [ext_resource type="Texture2D" uid="uid://7k1807dydmf" path="res://sprites/hook_point.png" id="1_6k2ex"]
 [ext_resource type="Script" path="res://scripts/magnetic_blast.gd" id="1_r7pt3"]
-[ext_resource type="PackedScene" uid="uid://b4osyq40fhxg3" path="res://Scenes/explosion_particles.tscn" id="2_5tapu"]
+
+[sub_resource type="Curve" id="Curve_nfse0"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.505263), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_7jp2b"]
+curve = SubResource("Curve_nfse0")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_aroi0"]
+lifetime_randomness = 0.5
+particle_flag_align_y = true
+particle_flag_rotate_y = true
+particle_flag_disable_z = true
+direction = Vector3(0, 0, 0)
+spread = 180.0
+flatness = 1.0
+gravity = Vector3(0, 0, 0)
+initial_velocity_min = 200.0
+initial_velocity_max = 700.0
+orbit_velocity_min = 0.0
+orbit_velocity_max = 0.0
+scale_min = 5.0
+scale_max = 25.0
+scale_curve = SubResource("CurveTexture_7jp2b")
+color = Color(0.756863, 0.882353, 1, 1)
+
+[sub_resource type="PackedScene" id="PackedScene_65uov"]
+_bundled = {
+"conn_count": 0,
+"conns": PackedInt32Array(),
+"editable_instances": [],
+"names": PackedStringArray("GPUParticles2D", "GPUParticles2D", "emitting", "amount", "process_material", "lifetime", "one_shot", "collision_base_size"),
+"node_count": 1,
+"node_paths": [],
+"nodes": PackedInt32Array(-1, -1, 1, 0, -1, 6, 2, 0, 3, 1, 4, 2, 5, 3, 6, 4, 7, 5, 0),
+"variants": [false, 50, SubResource("ParticleProcessMaterial_aroi0"), 0.3, true, 0.0],
+"version": 3
+}
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8ri83"]
 size = Vector2(20, 36)
@@ -12,7 +49,7 @@ radius = 107.042
 
 [node name="magnetic_blast" type="Area2D"]
 script = ExtResource("1_r7pt3")
-explosion_particle = ExtResource("2_5tapu")
+explosion_particle = SubResource("PackedScene_65uov")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(1.78814e-07, -1.78814e-07)
