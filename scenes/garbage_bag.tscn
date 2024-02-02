@@ -10,7 +10,7 @@ size = Vector2(77, 50.5)
 size = Vector2(77, 20)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_g5xk7"]
-size = Vector2(96, 55)
+size = Vector2(104, 55)
 
 [node name="GarbageBag" type="CharacterBody2D"]
 script = ExtResource("1_aekpq")

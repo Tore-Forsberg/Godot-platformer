@@ -20,8 +20,7 @@ func _physics_process(delta):
 	if not is_on_floor():
 		velocity.y += gravity * delta
 	
-	if left_raycast.is_colliding() or right_raycast.is_colliding():
-		velocity.x *= -1
+	check_for_collision()
 
 	move_and_slide()
 
@@ -29,6 +28,17 @@ func _physics_process(delta):
 func death():
 	queue_free()
 
+
+func check_for_collision():
+	var is_hitting_wall = left_raycast.is_colliding() or right_raycast.is_colliding()
+	if is_hitting_wall:
+		var collision
+		if left_raycast.is_colliding():
+			collision = left_raycast.get_collider()
+		if right_raycast.is_colliding():
+			collision = right_raycast.get_collider()
+		if not collision is Player:
+			velocity.x *= -1
 
 func _on_top_checker_body_entered(body):
 	if body is Player:
