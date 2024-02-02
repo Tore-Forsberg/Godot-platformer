@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://1rq0rtqh1gq1"
-path="res://.godot/imported/garbage_bag_spritesheet.png-cd22c468739faee628bafcbc7efda553.ctex"
+uid="uid://cvf71qrvp36ma"
+path="res://.godot/imported/garbage_bag_enemy_spritesheet.png-eeb0404cf57090f39e9ae82f54df9648.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/garbage_bag_spritesheet.png"
-dest_files=["res://.godot/imported/garbage_bag_spritesheet.png-cd22c468739faee628bafcbc7efda553.ctex"]
+source_file="res://sprites/garbage_bag_enemy_spritesheet.png"
+dest_files=["res://.godot/imported/garbage_bag_enemy_spritesheet.png-eeb0404cf57090f39e9ae82f54df9648.ctex"]
 
 [params]
 
