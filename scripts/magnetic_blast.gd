@@ -16,6 +16,8 @@ extends Area2D
 
 
 var has_hit_item: bool
+var enemy
+var distance_to_enemy_pos
 var player
 var is_explosion_active: bool
 var is_hitting_player: bool
@@ -28,8 +30,10 @@ func _ready():
 
 
 func _physics_process(delta):
-	if not has_hit_item:
+	if not has_hit_item and not enemy:
 		position += (Vector2.RIGHT*speed).rotated(rotation) * delta
+	if enemy:
+		position = enemy.global_position - distance_to_enemy_pos
 	if is_explosion_active:
 		magnetic_blast_explosion()
 
@@ -90,10 +94,15 @@ func control_knockback_velocity(velocity):
 		velocity = -magnetic_blast_max_knockback
 
 func _on_body_entered(body):
-	if body is Player:
-		if is_explosion_active:
-			player = body
-		return
+	if body is CharacterBody2D:
+		if body is Player:
+			if is_explosion_active:
+				player = body
+			return
+		else:
+			enemy = body
+			distance_to_enemy_pos = enemy.global_position - position
+
 	has_hit_item = true
 	explosion_timer.start()
 
