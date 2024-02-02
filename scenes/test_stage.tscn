@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://bmqwmncxmcdyr"]
+[gd_scene load_steps=5 format=3 uid="uid://bmqwmncxmcdyr"]
 
 [ext_resource type="Texture2D" uid="uid://cc2vvdt0noy6u" path="res://sprites/platformPlaceholder.svg" id="1_j5e3v"]
 [ext_resource type="PackedScene" uid="uid://cgrgwljxol25" path="res://scenes/spike.tscn" id="2_uw0i8"]
+[ext_resource type="PackedScene" uid="uid://p5vy0no5ay8t" path="res://scenes/garbage_bag.tscn" id="3_rb4p5"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vof1e"]
 size = Vector2(2000, 400)
@@ -275,10 +276,25 @@ texture = ExtResource("1_j5e3v")
 position = Vector2(548, 823)
 shape = SubResource("RectangleShape2D_vof1e")
 
-[node name="Spike" parent="." instance=ExtResource("2_uw0i8")]
+[node name="Spikes" type="Node2D" parent="."]
+
+[node name="Spike" parent="Spikes" instance=ExtResource("2_uw0i8")]
 position = Vector2(980, 603)
 scale = Vector2(8, 2)
 
-[node name="Spike2" parent="." instance=ExtResource("2_uw0i8")]
+[node name="Spike2" parent="Spikes" instance=ExtResource("2_uw0i8")]
 position = Vector2(5486, -1133)
 scale = Vector2(9.75, 6)
+
+[node name="Enemies" type="Node2D" parent="."]
+
+[node name="GarbageBag" parent="Enemies" instance=ExtResource("3_rb4p5")]
+position = Vector2(2837, 570)
+speed = -300
+
+[node name="GarbageBag2" parent="Enemies" instance=ExtResource("3_rb4p5")]
+position = Vector2(4749, -1167)
+speed = -300
+
+[node name="GarbageBag3" parent="Enemies" instance=ExtResource("3_rb4p5")]
+position = Vector2(10204, -1266)
