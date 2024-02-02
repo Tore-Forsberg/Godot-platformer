@@ -4,7 +4,7 @@ extends CharacterBody2D
 @onready var left_raycast : RayCast2D = $LeftRayCast
 @onready var right_raycast : RayCast2D = $RightRayCast
 
-@export var movement_range = 1000
+
 @export var speed = 200
 @export var bounce_value = 1000
 
