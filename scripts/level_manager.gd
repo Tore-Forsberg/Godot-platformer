@@ -22,13 +22,10 @@ func load_level(level_id : int) -> void:
 	if not level_data:
 		return
 	
-	print("tjo")
 	var level_path = "res://scenes/%s.tscn" % level_data.level_path
 	var level_res = load(level_path)
-	print("förbi level_res")
+
 	if level_res:
-		print("inne i if")
-		print(main_scene)
 		loaded_level = level_res.instantiate()
 		
 		main_scene.add_child(loaded_level)
