@@ -1,3 +1,21 @@
-[gd_scene format=3 uid="uid://bcjv05mmsffk4"]
+[gd_scene load_steps=5 format=3 uid="uid://bcjv05mmsffk4"]
+
+[ext_resource type="Script" path="res://scenes/main.gd" id="1_ngk0c"]
+[ext_resource type="PackedScene" uid="uid://co55q0rrongid" path="res://scenes/ui/main_menu.tscn" id="1_wvyfo"]
+[ext_resource type="Script" path="res://scripts/classes/level_data.gd" id="2_d5q60"]
+
+[sub_resource type="Resource" id="Resource_qtyb8"]
+script = ExtResource("2_d5q60")
+level_id = 1
+level_name = "Test level"
+level_completed = false
+level_unlocked = false
+level_path = "levels/test_stage"
 
 [node name="World" type="Node2D"]
+script = ExtResource("1_ngk0c")
+available_levels = Array[ExtResource("2_d5q60")]([SubResource("Resource_qtyb8")])
+
+[node name="UIMain" type="CanvasLayer" parent="."]
+
+[node name="MainMenu" parent="UIMain" instance=ExtResource("1_wvyfo")]

@@ -4,7 +4,7 @@ class_name MagneticLauncher extends Area2D
 @onready var player = get_parent()
 
 
-var magnetic_blast = preload("res://scenes/magnetic_blast.tscn")
+var magnetic_blast = preload("res://scenes/player_tools/magnetic_blast.tscn")
 var can_fire = true
 
 
