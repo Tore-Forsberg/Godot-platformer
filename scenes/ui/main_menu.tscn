@@ -2,13 +2,7 @@
 
 [ext_resource type="Script" path="res://scripts/main_menu.gd" id="1_2aq5x"]
 [ext_resource type="Texture2D" uid="uid://b0d5sw6f0gu8g" path="res://sprites/main_menu_background.png" id="1_sxt0b"]
-
-[sub_resource type="LabelSettings" id="LabelSettings_qg3o4"]
-font_size = 35
-font_color = Color(0, 0, 0, 1)
-outline_size = 10
-shadow_size = 18
-shadow_color = Color(1, 1, 0, 1)
+[ext_resource type="Texture2D" uid="uid://b2emxewgqtk3" path="res://sprites/title.png" id="3_5mj4t"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4pqrx"]
 bg_color = Color(0, 0, 0, 0.67451)
@@ -16,6 +10,10 @@ corner_radius_top_left = 10
 corner_radius_top_right = 10
 corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
+expand_margin_left = 10.0
+expand_margin_top = 10.0
+expand_margin_right = 10.0
+expand_margin_bottom = 10.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kt8f7"]
 bg_color = Color(0.396078, 0.396078, 0.396078, 0.67451)
@@ -23,6 +21,10 @@ corner_radius_top_left = 10
 corner_radius_top_right = 10
 corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
+expand_margin_left = 10.0
+expand_margin_top = 10.0
+expand_margin_right = 10.0
+expand_margin_bottom = 10.0
 
 [node name="MainMenu" type="Control"]
 layout_mode = 3
@@ -61,12 +63,11 @@ size_flags_horizontal = 4
 size_flags_vertical = 0
 theme_override_constants/separation = 32
 
-[node name="Label" type="Label" parent="TextureRect/MarginContainer/VBoxContainer"]
+[node name="GameTitle" type="TextureRect" parent="TextureRect/MarginContainer/VBoxContainer"]
 layout_mode = 2
-text = "The Adventures of
-Battery Boy"
-label_settings = SubResource("LabelSettings_qg3o4")
-horizontal_alignment = 1
+texture = ExtResource("3_5mj4t")
+expand_mode = 5
+stretch_mode = 6
 
 [node name="Play Button" type="Button" parent="TextureRect/MarginContainer/VBoxContainer"]
 layout_mode = 2
@@ -74,13 +75,6 @@ theme_override_font_sizes/font_size = 40
 theme_override_styles/normal = SubResource("StyleBoxFlat_4pqrx")
 theme_override_styles/hover = SubResource("StyleBoxFlat_kt8f7")
 text = "Play Game"
-
-[node name="Settings Button" type="Button" parent="TextureRect/MarginContainer/VBoxContainer"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 40
-theme_override_styles/normal = SubResource("StyleBoxFlat_4pqrx")
-theme_override_styles/hover = SubResource("StyleBoxFlat_kt8f7")
-text = "Settings"
 
 [node name="Quit Button" type="Button" parent="TextureRect/MarginContainer/VBoxContainer"]
 layout_mode = 2
@@ -90,5 +84,4 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_kt8f7")
 text = "Quit"
 
 [connection signal="pressed" from="TextureRect/MarginContainer/VBoxContainer/Play Button" to="." method="_on_play_button_pressed"]
-[connection signal="pressed" from="TextureRect/MarginContainer/VBoxContainer/Settings Button" to="." method="_on_settings_button_pressed"]
 [connection signal="pressed" from="TextureRect/MarginContainer/VBoxContainer/Quit Button" to="." method="_on_quit_button_pressed"]
