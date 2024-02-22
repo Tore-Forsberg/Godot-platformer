@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://bmqwmncxmcdyr"]
+[gd_scene load_steps=6 format=3 uid="uid://bmqwmncxmcdyr"]
 
 [ext_resource type="Texture2D" uid="uid://cc2vvdt0noy6u" path="res://sprites/platformPlaceholder.svg" id="1_j5e3v"]
 [ext_resource type="PackedScene" uid="uid://cgrgwljxol25" path="res://scenes/spike.tscn" id="2_uw0i8"]
 [ext_resource type="PackedScene" uid="uid://p5vy0no5ay8t" path="res://scenes/garbage_bag.tscn" id="3_rb4p5"]
+[ext_resource type="PackedScene" uid="uid://hyu7sb1hitr3" path="res://scenes/player.tscn" id="4_rnjx3"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vof1e"]
 size = Vector2(2000, 400)
@@ -298,3 +299,6 @@ speed = -300
 
 [node name="GarbageBag3" parent="Enemies" instance=ExtResource("3_rb4p5")]
 position = Vector2(10204, -1266)
+
+[node name="Player" parent="." instance=ExtResource("4_rnjx3")]
+position = Vector2(-1, 519)
