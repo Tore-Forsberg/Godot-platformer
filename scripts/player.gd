@@ -28,6 +28,7 @@ var gravity: float
 var wall_slide_friction: float
 var is_jump_available: bool
 var is_left_last_direction: bool
+var can_control : bool = true
 
 
 # Called when the node enters the scene tree for the first time.
@@ -42,6 +43,8 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta):
+	if not can_control:
+		return
 	manage_movement()
 	manage_jump_conditions()
 	manage_jump(delta)
@@ -177,3 +180,18 @@ func _on_jump_timer_timeout():
 
 func _on_jump_buffer_timer_timeout():
 	is_jump_buffer_pressed = false
+
+
+func handle_danger():
+	print("Player Died!")
+	visible = false
+	can_control = false
+	
+	await get_tree().create_timer(1).timeout
+	reset_player()
+	
+	
+func reset_player():
+	global_position = LevelManager.loaded_level.level_start_pos.global_position
+	visible = true
+	can_control = true

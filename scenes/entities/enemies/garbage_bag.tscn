@@ -77,6 +77,8 @@ size = Vector2(77, 20)
 size = Vector2(104, 55)
 
 [node name="GarbageBag" type="CharacterBody2D"]
+collision_layer = 6
+collision_mask = 11
 script = ExtResource("1_aekpq")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
@@ -88,9 +90,11 @@ shape = SubResource("RectangleShape2D_nylww")
 
 [node name="RightRayCast" type="RayCast2D" parent="."]
 target_position = Vector2(65, 0)
+collision_mask = 11
 
 [node name="LeftRayCast" type="RayCast2D" parent="."]
 target_position = Vector2(-65, 0)
+collision_mask = 11
 
 [node name="TopChecker" type="Area2D" parent="."]
 
