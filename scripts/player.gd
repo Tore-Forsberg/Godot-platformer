@@ -169,11 +169,6 @@ func wall_bounce():
 			wall_bounce_timer.start()
 
 
-func death():
-	queue_free()
-	get_tree().reload_current_scene()
-
-
 func _on_jump_timer_timeout():
 	is_jump_available = false
 
