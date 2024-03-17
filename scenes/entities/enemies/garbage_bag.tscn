@@ -1,7 +1,8 @@
-[gd_scene load_steps=15 format=3 uid="uid://p5vy0no5ay8t"]
+[gd_scene load_steps=16 format=3 uid="uid://p5vy0no5ay8t"]
 
 [ext_resource type="Script" path="res://scripts/garbage_bag.gd" id="1_aekpq"]
 [ext_resource type="Texture2D" uid="uid://cvf71qrvp36ma" path="res://sprites/garbage_bag_enemy_spritesheet.png" id="2_q1cxq"]
+[ext_resource type="PackedScene" uid="uid://bn65u153ltc66" path="res://scenes/danger_zone.tscn" id="3_ei6ap"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_dfw1p"]
 atlas = ExtResource("2_q1cxq")
@@ -97,16 +98,17 @@ target_position = Vector2(-65, 0)
 collision_mask = 11
 
 [node name="TopChecker" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 8
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="TopChecker"]
 position = Vector2(-3.5, -12)
 shape = SubResource("RectangleShape2D_fx4b4")
 
-[node name="SideChecker" type="Area2D" parent="."]
+[node name="DangerZone" parent="." instance=ExtResource("3_ei6ap")]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="SideChecker"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DangerZone"]
 position = Vector2(0, 26.5)
 shape = SubResource("RectangleShape2D_g5xk7")
 
 [connection signal="body_entered" from="TopChecker" to="." method="_on_top_checker_body_entered"]
-[connection signal="body_entered" from="SideChecker" to="." method="_on_side_checker_body_entered"]

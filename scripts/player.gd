@@ -187,11 +187,13 @@ func handle_danger():
 	visible = false
 	can_control = false
 	
-	await get_tree().create_timer(1).timeout
+	await get_tree().create_timer(0.2).timeout
 	reset_player()
 	
 	
 func reset_player():
+	velocity.x = 0
+	velocity.y = 0
 	global_position = LevelManager.loaded_level.level_start_pos.global_position
 	visible = true
 	can_control = true

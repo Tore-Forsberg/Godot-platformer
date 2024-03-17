@@ -44,14 +44,9 @@ func check_for_collision():
 		if not collision is Player:
 			velocity.x *= -1
 			animated_sprite.flip_h = not animated_sprite.flip_h
-			
+
 
 func _on_top_checker_body_entered(body):
 	if body is Player:
 		body.velocity.y -= bounce_value
 		death()
-
-
-func _on_side_checker_body_entered(body):
-	if body is Player:
-		body.death()
