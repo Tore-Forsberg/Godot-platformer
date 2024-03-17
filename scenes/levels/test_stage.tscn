@@ -2,16 +2,17 @@
 
 [ext_resource type="Script" path="res://scripts/classes/level.gd" id="1_3n460"]
 [ext_resource type="Texture2D" uid="uid://cc2vvdt0noy6u" path="res://sprites/platformPlaceholder.svg" id="2_mgnuu"]
-[ext_resource type="PackedScene" uid="uid://cgrgwljxol25" path="res://scenes/obstacles/spike.tscn" id="3_h3xd5"]
-[ext_resource type="PackedScene" uid="uid://p5vy0no5ay8t" path="res://scenes/enemies/garbage_bag.tscn" id="4_xukui"]
+[ext_resource type="PackedScene" uid="uid://cgrgwljxol25" path="res://scenes/entities/obstacles/spike.tscn" id="3_h3xd5"]
+[ext_resource type="PackedScene" uid="uid://p5vy0no5ay8t" path="res://scenes/entities/enemies/garbage_bag.tscn" id="4_xukui"]
 [ext_resource type="PackedScene" uid="uid://cbkjmuron6hpm" path="res://scenes/player.tscn" id="5_pegkf"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vof1e"]
 size = Vector2(2000, 400)
 
-[node name="TestStage" type="Node2D"]
+[node name="TestStage" type="Node2D" node_paths=PackedStringArray("level_start_pos")]
 script = ExtResource("1_3n460")
 level_id = 1
+level_start_pos = NodePath("PlayerStart")
 metadata/_edit_horizontal_guides_ = []
 
 [node name="Platforms" type="Node2D" parent="."]
@@ -305,4 +306,7 @@ position = Vector2(10204, -1266)
 speed = 300
 
 [node name="Player" parent="." instance=ExtResource("5_pegkf")]
+position = Vector2(-1, 519)
+
+[node name="PlayerStart" type="Node2D" parent="."]
 position = Vector2(-1, 519)
